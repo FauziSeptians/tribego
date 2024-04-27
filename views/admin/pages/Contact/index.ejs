@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include('../../layouts/header.ejs') %>
+  <body>
+
+    <%- include('../../layouts/navigation.ejs') %>
+
+
+
+    <div class="min-h-full">
+        CONTACT
+
+        <% data.forEach(value => { %>
+          <div>
+            <%= value.id  %>
+          </div>
+        <% }) %>
+    </div>
+
+
+
+    <%- include('../../layouts/footer.ejs') %>
+  </body>
+</html>
+
+
+

@@ -85,7 +85,7 @@ section {
 }
 
 header {
-  position: fixed;
+  position: sticky;
   top: 0;
   left: 0;
   right: 0;
@@ -281,7 +281,6 @@ header .search-bar-container label:hover {
   align-items: center;
   justify-content: center;
   flex-flow: column;
-  position: relative;
   z-index: 0;
 }
 
@@ -613,6 +612,10 @@ header .search-bar-container label:hover {
 
 .contact button[type="submit"].btn:hover {
   background-color: #ff8c00;
+}
+
+.min-h-full {
+  min-height: calc(100vh - 300px);
 }
 
 @media (max-width: 768px) {
