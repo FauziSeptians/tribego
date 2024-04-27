@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include('layouts/header.ejs') %>
+  <body>
+    <header>
+      <div id="menu-bar" class="fas fa-bars"></div>
+
+      <a href="#" class="logo">
+        <span id="tri">tri</span><span id="be">be</span><span id="go">go</span>
+      </a>
+
+      <%- include('layouts/navigation.ejs') %>
+
+      <div class="icons">
+        <i class="fas fa-search" id="search-btn"></i>
+        <i class="fas fa-user" id="login-btn"></i>
+        <i class="fas fa-times" id="exit-btn"></i>
+      </div>
+
+      <form action="" class="search-bar-container">
+        <input type="search" id="search-bar" placeholder="search here..." />
+        <label for="search-bar" class="fas fa-search"></label>
+      </form>
+    </header>
+
+    <div class="login-form-container">
+      <i class="fas fa-times" id="form-close"></i>
+
+      <form action="">
+        <h3>login</h3>
+        <input type="email" class="box" placeholder="enter your email" />
+        <input type="password" class="box" placeholder="enter your password" />
+        <input type="submit" value="login now" class="btn" />
+        <input type="checkbox" id="remember" />
+        <label for="remember">remember me</label>
+        <p>forget password? <a href="#">click here</a></p>
+        <p>don't have an account? <a href="#">register now</a></p>
+      </form>
+    </div>
+
+    <section class="home" id="home">
+      <div class="content">
+        <h3>adventure is worthwhile</h3>
+        <p>discover new places with us, adventure awaits</p>
+        <a href="#" class="btn">discover more</a>
+      </div>
+
+      <div class="controls">
+        <span class="vid-btn active" data-src="assets/vid (1).mp4"></span>
+        <span class="vid-btn" data-src="assets/vid (2).mp4"></span>
+        <span class="vid-btn" data-src="assets/vid (3).mp4"></span>
+        <span class="vid-btn" data-src="assets/vid (4).mp4"></span>
+        <span class="vid-btn" data-src="assets/vid (5).mp4"></span>
+      </div>
+
+      <div class="video-container">
+        <video
+          src="assets/vid (1).mp4"
+          id="video-slider"
+          loop
+          autoplay
+          muted
+        ></video>
+      </div>
+    </section>
+
+    <section class="book" id="book">
+      <h1 class="heading">
+        <span>B</span>
+        <span>O</span>
+        <span>O</span>
+        <span>K</span>
+        <span class="space"></span>
+        <span>N</span>
+        <span>O</span>
+        <span>W</span>
+      </h1>
+
+      <div class="row">
+        <div class="image">
+          <img src="assets/book-img.jpg" alt="" />
+        </div>
+        <form action="">
+          <div class="inputBox">
+            <h3>where to</h3>
+            <input type="text" placeholder="place name" />
+          </div>
+          <div class="inputBox">
+            <h3>how many</h3>
+            <input type="text" placeholder="number of guests" />
+          </div>
+          <div class="inputBox">
+            <h3>arrivals</h3>
+            <input type="date" />
+          </div>
+          <div class="inputBox">
+            <h3>leaving</h3>
+            <input type="date" />
+          </div>
+          <input type="submit" class="btn" value="book now" />
+        </form>
+      </div>
+    </section>
+
+    <section class="packages" id="packages">
+      <h1 class="heading">
+        <span>P</span>
+        <span>A</span>
+        <span>C</span>
+        <span>K</span>
+        <span>A</span>
+        <span>G</span>
+        <span>E</span>
+        <span>S</span>
+      </h1>
+      <div class="box-container">
+        <div class="box">
+          <img src="assets/p (1).jpg" alt="" />
+          <div class="content">
+            <h3><i class="fas fa-map-market-alt"></i>Raja Ampat</h3>
+            <p>Papua</p>
+            <div class="stars">
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+            </div>
+            <div class="price">$90.00 <span>$120.00</span></div>
+            <a href="#" class="btn">book now</a>
+          </div>
+        </div>
+
+        <div class="box">
+          <img src="assets/p (2).jpg" alt="" />
+          <div class="content">
+            <h3><i class="fas fa-map-market-alt"></i>Labuan Bajo</h3>
+            <p>Sulawesi</p>
+            <div class="stars">
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+            </div>
+            <div class="price">$90.00 <span>$120.00</span></div>
+            <a href="#" class="btn">book now</a>
+          </div>
+        </div>
+
+        <div class="box">
+          <img src="assets/p (3).jpg" alt="" />
+          <div class="content">
+            <h3><i class="fas fa-map-market-alt"></i>Danau Toba</h3>
+            <p>Sumatra</p>
+            <div class="stars">
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+            </div>
+            <div class="price">$90.00 <span>$120.00</span></div>
+            <a href="#" class="btn">book now</a>
+          </div>
+        </div>
+
+        <div class="box">
+          <img src="assets/p (4).jpg" alt="" />
+          <div class="content">
+            <h3><i class="fas fa-map-market-alt"></i>Bromo</h3>
+            <p>Jawa</p>
+            <div class="stars">
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+            </div>
+            <div class="price">$90.00 <span>$120.00</span></div>
+            <a href="#" class="btn">book now</a>
+          </div>
+        </div>
+
+        <div class="box">
+          <img src="assets/p (5).jpg" alt="" />
+          <div class="content">
+            <h3><i class="fas fa-map-market-alt"></i>Bali</h3>
+            <p>Bali</p>
+            <div class="stars">
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+            </div>
+            <div class="price">$90.00 <span>$120.00</span></div>
+            <a href="#" class="btn">book now</a>
+          </div>
+        </div>
+
+        <div class="box">
+          <img src="assets/p (6).jpg" alt="" />
+          <div class="content">
+            <h3><i class="fas fa-map-market-alt"></i>Candi Borobudur</h3>
+            <p>Jawa</p>
+            <div class="stars">
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+            </div>
+            <div class="price">$90.00 <span>$120.00</span></div>
+            <a href="#" class="btn">book now</a>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="services" id="services">
+      <h1 class="heading">
+        <span>S</span>
+        <span>E</span>
+        <span>R</span>
+        <span>V</span>
+        <span>I</span>
+        <span>C</span>
+        <span>E</span>
+        <span>S</span>
+      </h1>
+
+      <div class="box-container">
+        <div class="box">
+          <i class="fas fa-hotel"></i>
+          <h3>Affordable Hotels</h3>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+        </div>
+
+        <div class="box">
+          <i class="fas fa-hotel"></i>
+          <h3>Luxury Resorts</h3>
+          <p>
+            Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+          </p>
+        </div>
+
+        <div class="box">
+          <i class="fas fa-hotel"></i>
+          <h3>Cozy Bed & Breakfasts</h3>
+          <p>
+            Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
+            nisi ut aliquip ex ea commodo consequat.
+          </p>
+        </div>
+
+        <div class="box">
+          <i class="fas fa-hotel"></i>
+          <h3>Budget Motels</h3>
+          <p>
+            Duis aute irure dolor in reprehenderit in voluptate velit esse
+            cillum dolore eu fugiat nulla pariatur.
+          </p>
+        </div>
+
+        <div class="box">
+          <i class="fas fa-hotel"></i>
+          <h3>Charming Guesthouses</h3>
+          <p>
+            Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
+            officia deserunt mollit anim id est laborum.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="gallery" id="gallery">
+      <h1 class="heading">
+        <span>G</span>
+        <span>A</span>
+        <span>L</span>
+        <span>L</span>
+        <span>E</span>
+        <span>R</span>
+        <span>Y</span>
+      </h1>
+      <div class="box-container">
+        <div class="box">
+          <img src="assets/g (1).jpg" alt="" />
+          <h3>amazing places</h3>
+          <p>lorem ipsum</p>
+          <a href="#" class="btn"></a>
+        </div>
+
+        <div class="box">
+          <img src="assets/g (2).jpg" alt="" />
+          <h3>amazing places</h3>
+          <p>lorem ipsum</p>
+          <a href="#" class="btn"></a>
+        </div>
+
+        <div class="box">
+          <img src="assets/g (3).jpg" alt="" />
+          <h3>amazing places</h3>
+          <p>lorem ipsum</p>
+          <a href="#" class="btn"></a>
+        </div>
+
+        <div class="box">
+          <img src="assets/g (4).jpg" alt="" />
+          <h3>amazing places</h3>
+          <p>lorem ipsum</p>
+          <a href="#" class="btn"></a>
+        </div>
+
+        <div class="box">
+          <img src="assets/g (5).jpg" alt="" />
+          <h3>amazing places</h3>
+          <p>lorem ipsum</p>
+          <a href="#" class="btn"></a>
+        </div>
+
+        <div class="box">
+          <img src="assets/g (6).jpg" alt="" />
+          <h3>amazing places</h3>
+          <p>lorem ipsum</p>
+          <a href="#" class="btn"></a>
+        </div>
+
+        <div class="box">
+          <img src="assets/g (7).jpg" alt="" />
+          <h3>amazing places</h3>
+          <p>lorem ipsum</p>
+          <a href="#" class="btn"></a>
+        </div>
+
+        <div class="box">
+          <img src="assets/g (8).jpg" alt="" />
+          <h3>amazing places</h3>
+          <p>lorem ipsum</p>
+          <a href="#" class="btn"></a>
+        </div>
+
+        <div class="box">
+          <img src="assets/g (9).jpg" alt="" />
+          <h3>amazing places</h3>
+          <p>lorem ipsum</p>
+          <a href="#" class="btn"></a>
+        </div>
+      </div>
+    </section>
+
+    <section class="review" id="review">
+      <h1 class="heading">
+        <span>R</span>
+        <span>E</span>
+        <span>V</span>
+        <span>I</span>
+        <span>E</span>
+        <span>W</span>
+      </h1>
+
+      <div class="wrapper">
+        <div class="slider">
+          <div class="box">
+            <img src="assets/r (1).jpg" alt="" />
+            <h3>Azizi Asadel</h3>
+            <p>jkt48</p>
+            <div class="stars">
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="far fa-star"></i>
+            </div>
+          </div>
+        </div>
+
+        <div class="slider">
+          <div class="box">
+            <img src="assets/r (2).jpg" alt="" />
+            <h3>Catherine Valencia</h3>
+            <p>jkt48</p>
+            <div class="stars">
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="far fa-star"></i>
+            </div>
+          </div>
+        </div>
+
+        <div class="slider">
+          <div class="box">
+            <img src="assets/r (3).jpg" alt="" />
+            <h3>Oline Manuel</h3>
+            <p>jkt48</p>
+            <div class="stars">
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="far fa-star"></i>
+            </div>
+          </div>
+        </div>
+
+        <div class="slider">
+          <div class="box">
+            <img src="assets/r (4).jpg" alt="" />
+            <h3>Freya</h3>
+            <p>jkt48</p>
+            <div class="stars">
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="far fa-star"></i>
+            </div>
+          </div>
+        </div>
+
+        <div class="slider">
+          <div class="box">
+            <img src="assets/r (5).jpg" alt="" />
+            <h3>Davina Veronica</h3>
+            <p>jkt48</p>
+            <div class="stars">
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="far fa-star"></i>
+            </div>
+          </div>
+        </div>
+
+        <div class="slider">
+          <div class="box">
+            <img src="assets/r (6).jpg" alt="" />
+            <h3>Reva Fidela</h3>
+            <p>jkt48</p>
+            <div class="stars">
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="far fa-star"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="contact">
+      <h1 class="heading">
+        <span>C</span>
+        <span>O</span>
+        <span>N</span>
+        <span>T</span>
+        <span>A</span>
+        <span>C</span>
+        <span>T</span>
+      </h1>
+      <div class="row">
+        <div class="image">
+          <img src="assets/contact-img.jpg" alt="Contact Image" />
+        </div>
+        <div class="form-container">
+          <h2>Contact Us</h2>
+          <form action="">
+            <div class="input-group">
+              <input
+                type="text"
+                id="name"
+                name="name"
+                placeholder="Your Name"
+                required
+              />
+              <input
+                type="email"
+                id="email"
+                name="email"
+                placeholder="Your Email"
+                required
+              />
+            </div>
+            <div class="input-group">
+              <input
+                type="tel"
+                id="phone"
+                name="phone"
+                placeholder="Your Phone Number"
+                required
+              />
+              <input
+                type="text"
+                id="subject"
+                name="subject"
+                placeholder="Subject"
+                required
+              />
+            </div>
+            <textarea
+              id="message"
+              name="message"
+              placeholder="Your Message"
+              rows="5"
+              required
+            ></textarea>
+            <button type="submit" class="btn">Send Message</button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <section class="brand-container">
+      <div class="swiper-container brand-slider">
+        <div class="swiper-wrapper">
+          <div class="swiper-slide"><img src="images/1.jpg" alt="" /></div>
+          <div class="swiper-slide"><img src="images/2.jpg" alt="" /></div>
+          <div class="swiper-slide"><img src="images/3.jpg" alt="" /></div>
+          <div class="swiper-slide"><img src="images/4.jpg" alt="" /></div>
+          <div class="swiper-slide"><img src="images/5.jpg" alt="" /></div>
+          <div class="swiper-slide"><img src="images/6.jpg" alt="" /></div>
+        </div>
+      </div>
+    </section>
+
+    <%- include('layouts/footer.ejs') %>
+  </body>
+</html>
