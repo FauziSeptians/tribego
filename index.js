@@ -1,6 +1,11 @@
 const express = require("express");
 const app = express();
 const port = 3000;
+const bodyParser = require("body-parser");
+const multer = require("multer");
+
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
 // get data dummy
 const data = require("./dummyData");
@@ -11,6 +16,15 @@ const users = myData.Users; // this is how to get data users
 app.set("view engine", "ejs");
 
 app.use(express.static("public"));
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "public/uploads/");
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + "-" + file.originalname);
+  },
+});
 
 // ROUTES
 // USER
@@ -23,6 +37,14 @@ app.get("/admin/users", adminUsers);
 app.get("/admin/destinations", adminDestinations);
 app.get("/admin/reviews", adminReviews);
 app.get("/admin/contact", adminContact);
+
+const upload = multer({ storage: storage });
+
+app.post(
+  "/destination/create",
+  upload.single("createImage"),
+  createDestination
+);
 // END ROUTES
 
 app.listen(port, () => {
@@ -53,4 +75,30 @@ function adminReviews(req, res) {
 
 function adminContact(req, res) {
   res.render(`${routerAdminPage}Contact/index`, { data: myData.Contact });
+}
+
+function createDestination(req, res) {
+  const title = req.body.createTitle;
+  const location = req.body.createLocation;
+  const description = req.body.createDescription;
+  const price = req.body.createPrice;
+  const promo = req.body.createPromo;
+
+  if (!req.file) {
+    return res.status(400).send("No file uploaded.");
+  }
+
+  const imagePath = req.file.path;
+
+  const newDestination = {
+    id: myData.Destinations.length + 1,
+    title: title,
+    location: location,
+    description: description,
+    price: price,
+    promo: promo,
+    imagePath: imagePath,
+  };
+
+  console.log(newDestination);
 }

@@ -616,6 +616,15 @@ header .search-bar-container label:hover {
 
 .min-h-full {
   min-height: calc(100vh - 300px);
+  padding: 20px 0px;
+}
+
+.flex {
+  display: flex;
+}
+
+.gap-1 {
+  gap: 1rem;
 }
 
 @media (max-width: 768px) {
@@ -757,3 +766,13 @@ header .search-bar-container label:hover {
   color: var(--orange);
 }
 
+
+.mx-10 {
+  margin: 0 10rem;
+}
+
+.flex-between {
+  width: 100%;
+  display: flex; 
+  justify-content: space-between;
+  align-items: center; 
