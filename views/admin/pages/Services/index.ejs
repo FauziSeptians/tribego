@@ -5,10 +5,10 @@
 
     <%- include('../../layouts/navigation.ejs') %>
 
-    <div class="admin-destination min-h-full mx-10 table-text">
+    <div class="admin-service min-h-full mx-10 table-text">
         <div class="flex-between">
           <div>
-            <h1>DESTINATIONS</h1>
+            <h1>SERVICES</h1>
           </div>
           <div class="btn-create" onclick="openCreateModal()">
             Create
@@ -19,42 +19,24 @@
             <tr>
               <th>Id</th>
               <th>Title</th>
-              <th>Location</th>
               <th>Description</th>
-              <th>Price</th>
-              <th>Promo</th>
               <th class="text-center">Action</th>
             </tr>
             <% data.forEach(value => { %>
               <tr>
                 <td>
-                  <div class="isMobile">ID :</div>
                   <%= value.id  %>
                 </td>
                 <td>
-                  <div class="isMobile">Title :</div>
                   <%= value.title  %>
                 </td>
                 <td>
-                  <div class="isMobile">LOCATION :</div>
-                  <%= value.location  %>
-                </td>
-                <td>
-                  <div class="isMobile">DESCRIPTION :</div>
                   <%= value.description  %>
-                </td>
-                <td>
-                  <div class="isMobile">PRICE :</div>
-                  <%= value.price  %>
-                </td>
-                <td>
-                  <div class="isMobile">PROMO :</div>
-                  <%= value.promo  %>
                 </td>
                 <td class="text-center action">
                   <div class="flex gap-1">
                     <div class="btn-edit" onclick="openEditModal('<%= JSON.stringify(value) %>')">
-                      <div>Edit</div>
+                      <div >Edit</div>
                     </div>
                     <div class="btn-delete" onclick="openDeleteModal('<%= value.id %>')">
                         <div>Delete</div>
@@ -70,26 +52,14 @@
     <div id="createModal" class="modal">
       <div class="modal-content">
         <span class="close" onclick="closeCreateModal()">&times;</span>
-          <form id="createForm" method="post" action="/destination/create" enctype="multipart/form-data">
+          <form id="createForm" method="post" action="/service/create" enctype="multipart/form-data">
             <div>
               <label for="createTitle">Title</label>
               <input type="text" placeholder="Title" id="createTitle" name="createTitle">
             </div>
             <div>
-              <label for="createLocation">Location</label>
-              <input type="text" placeholder="Location" id="createLocation" name="createLocation">
-            </div>
-            <div>
               <label for="createDescription">Description</label>
               <input type="text" placeholder="Description" id="createDescription" name="createDescription">
-            </div>
-            <div>
-              <label for="createPrice">Price</label>
-              <input type="text" placeholder="Price" id="createPrice" name="createPrice">
-            </div>
-            <div>
-              <label for="createPromo">Promo</label>
-              <input type="text" placeholder="Promo" id="createPromo" name="createPromo">
             </div>
             <div>
               <label for="image">Image</label>
@@ -104,10 +74,10 @@
     <div id="deleteModal" class="modal">
       <div class="modal-content">
         <span class="close" onclick="closeDeleteModal()">&times;</span>
-        <p>Are you sure you want to delete this destination?</p>
+        <p>Are you sure you want to delete this service?</p>
         <div class="flex gap-1">
           <div>
-            <form id="deleteForm" action="/destination/0" method="post">
+            <form id="deleteForm" action="/service/0" method="post">
               <button type="submit" class="px-4 py-2 text-center rounded-lg bg-red-600 hover:bg-red-400 text-white w-full h-full">Yes</button>
             </form>
           </div>
@@ -130,12 +100,9 @@
     var createModal = document.getElementById("createModal");
     createModal.style.display = "flex";
 
-    document.getElementById("createForm").action = "/destination/create/";
+    document.getElementById("createForm").action = "/service/create/";
     document.getElementById("createTitle").value = "";
-    document.getElementById("createLocation").value = "";
     document.getElementById("createDescription").value = "";
-    document.getElementById("createPrice").value = "";
-    document.getElementById("createPromo").value = "";
   }
 
   function closeCreateModal() {
@@ -149,12 +116,12 @@
 
     const item = JSON.parse(data);
 
-    document.getElementById("createForm").action = "/destination/update/" + item.id + '?_method=PATCH';
+    console.log(data)
+    console.log(item.description)
+
+    document.getElementById("createForm").action = "/service/update/" + item.id + '?_method=PATCH';
     document.getElementById("createTitle").value = item.title
-    document.getElementById("createLocation").value = item.location
     document.getElementById("createDescription").value = item.description
-    document.getElementById("createPrice").value = item.price
-    document.getElementById("createPromo").value = item.promo
   }
 
   
@@ -163,7 +130,7 @@
     var deleteModal = document.getElementById("deleteModal");
     deleteModal.style.display = "flex";
 
-    document.getElementById("deleteForm").action = "/destination/delete/" + id + "?_method=DELETE";
+    document.getElementById("deleteForm").action = "/service/delete/" + id + "?_method=DELETE";
   }
 
 
@@ -173,7 +140,7 @@
   }
 
   function confirmDelete() {
-    window.location.href = "/destination/delete/" + idForDelete;
+    window.location.href = "/service/delete/" + idForDelete;
 
     closeDeleteModal();
   }
@@ -222,9 +189,7 @@
 }
 
 
-
 </style>
-
 
 
 
