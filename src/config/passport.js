@@ -1,38 +1,35 @@
-import passport from "passport";
-import { Strategy as LocalStrategy } from 'passport-local';
-import { UserModel } from "../model/users-model.js";
+// import passport from "passport";
+// import { Strategy } from "passport-local";
+// import { UserModel } from "../model/users-model.js";
+// import { ResponseError } from "../error/errors.js";
 
-passport.use(
-  new LocalStrategy(
-    { usernameField: "email" },
-    async (email, password, done) => {
-      try {
-        const user = await UserModel.findOne({ email });
-        if (!user) {
-          return done(null, false, { message: "Incorrect email or password" });
-        }
+// passport.serializeUser((user, done) => {
+//   done(null, user.id);
+// });
 
-        const isMatch = await user.comparePassword(password);
-        if (!isMatch) {
-          return done(null, false, { message: "Incorrect email or password" });
-        }
+// passport.deserializeUser(async (id, done) => {
+//   try {
+//     const findUser = await User.findById(id);
+//     if (!findUser) throw new Error("User Not Found");
+//     done(null, findUser);
+//   } catch (err) {
+//     done(err, null);
+//   }
+// });
 
-        return done(null, user);
-      } catch (err) {
-        return done(err);
-      }
-    }
-  )
-);
-
-passport.serializeUser((user, done) => {
-  done(null, user.id);
-});
-
-passport.deserializeUser((id, done) => {
-  User.findById(id, (err, user) => {
-    done(err, user);
-  });
-});
-
-export default passport;
+// export default passport.use(
+//   // {
+//   //   usernameField: "email",
+//   //   passwordField: "password",
+//   // },
+//   new Strategy(async (username, password, done) => {
+//     console.log(email, password);
+//     // try {
+//     const findUser = await UserModel.findOne({ name: username });
+//     if (!findUser) throw new ResponseError(404, "User not found");
+//     //   done(null, findUser);
+//     // } catch (err) {
+//     //   done(err, null);
+//     // }
+//   })
+// );

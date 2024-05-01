@@ -5,9 +5,11 @@ import multer from "multer";
 import getData from "../../dummyData.js";
 import { errorMiddleware } from "../middleware/errors-middleware.js";
 import { connectDatabase } from "./db.js";
-import passport from "../config/passport.js";
-import session from "express-session";
 import methodOverride from "method-override";
+import { verifyJWT } from "../middleware/auth-middleware.js";
+import path, { dirname } from "path";
+import fs from "fs";
+import {RoleMiddleware} from "../middleware/role-middleware.js"
 
 export const apps = express();
 
@@ -22,31 +24,46 @@ export const storage = multer.diskStorage({
   },
 });
 const upload = multer({ storage: storage });
-
-// Passport middleware
-apps.use(
-  session({
-    secret: "your_secret_key",
-    resave: false,
-    saveUninitialized: false,
-  })
-);
-apps.use(passport.initialize());
-apps.use(passport.session());
-
-apps.use(bodyParser.json());
 apps.use(bodyParser.urlencoded({ extended: true }));
+apps.use(bodyParser.json());
 
 apps.use(publicRouter);
 apps.use(errorMiddleware);
-apps.use(bodyParser.urlencoded({ extended: true }));
-apps.use(bodyParser.json());
+
 apps.use(methodOverride("_method"));
+
+apps.get("/api/images/:filename", (req, res) => {
+  try {
+    const filename = req.params.filename;
+
+    const dir = "public/uploads/" + filename;
+
+    console.log(dir);
+
+    if (fs.existsSync(dir)) {
+      const image = fs.readFileSync(dir);
+
+      res.writeHead(200, { "Content-Type": "image/jpeg" });
+      res.end(image, "binary");
+    } else {
+      return res.status(404).send({
+        status: "404",
+        message: "File gambar tidak ditemukan",
+        additionalData: {},
+      });
+    }
+  } catch (error) {
+    return res.status(200).send({
+      status: "404",
+      message: error.message,
+      additionalData: {},
+    });
+  }
+});
 
 // get data dummy
 const myData = getData();
 const users = myData.Users; // this is how to get data users
-// get data dummy
 
 apps.set("view engine", "ejs");
 
@@ -61,26 +78,51 @@ apps.get("/contact", contact);
 
 // ADMIN
 const routerAdminPage = "admin/pages/";
-apps.get("/admin", admin);
-apps.get("/admin/users", adminUsers);
-apps.get("/admin/destinations", adminDestinations);
-apps.get("/admin/services", adminServices);
-apps.get("/admin/reviews", adminReviews);
-apps.get("/admin/contact", adminContact);
+apps.get("/admin", verifyJWT, RoleMiddleware, admin);
+apps.get("/admin/users", verifyJWT, RoleMiddleware, adminUsers);
+apps.get("/admin/destinations", verifyJWT, RoleMiddleware, adminDestinations);
+apps.get("/admin/services", verifyJWT, RoleMiddleware, adminServices);
+apps.get("/admin/reviews", verifyJWT, RoleMiddleware, adminReviews);
+apps.get("/admin/contact", verifyJWT, RoleMiddleware, adminContact);
 
 // SERVICES
-apps.post("/service/create", upload.single("image"), createService);
-apps.patch("/service/update/:id", upload.single("image"), updateService);
-apps.delete("/service/delete/:id", deleteService);
+apps.post(
+  "/service/create",
+  upload.single("image"),
+  verifyJWT,
+  RoleMiddleware,
+  createService
+);
+apps.patch(
+  "/service/update/:id",
+  upload.single("image"),
+  verifyJWT,
+  RoleMiddleware,
+  updateService
+);
+apps.delete("/service/delete/:id", verifyJWT, RoleMiddleware, deleteService);
 
 // DESTINATIONS
-apps.post("/destination/create", upload.single("image"), createDestination);
+apps.post(
+  "/destination/create",
+  upload.single("image"),
+  verifyJWT,
+  RoleMiddleware,
+  createDestination
+);
 apps.patch(
   "/destination/update/:id",
   upload.single("image"),
+  verifyJWT,
+  RoleMiddleware,
   updateDestination
 );
-apps.delete("/destination/delete/:id", deleteDestination);
+apps.delete(
+  "/destination/delete/:id",
+  verifyJWT,
+  RoleMiddleware,
+  deleteDestination
+);
 // END ROUTES
 
 // METHODS
