@@ -616,7 +616,7 @@ header .search-bar-container label:hover {
 
 .min-h-full {
   min-height: calc(100vh - 300px);
-  padding: 20px 0px;
+  /* padding: 20px 0px; */
 }
 
 .flex {
@@ -624,8 +624,15 @@ header .search-bar-container label:hover {
 }
 
 .gap-1 {
-  gap: 1rem;
+  gap: .5rem;
 }
+
+
+header .navbar a.active-navbar {
+  color: #ff8c00;
+}
+
+
 
 @media (max-width: 768px) {
   .contact .row {
@@ -719,6 +726,10 @@ header .search-bar-container label:hover {
     max-width: 80%;
     margin: 0 auto;
   }
+
+  .mx-10 {
+    margin: 0 10rem;
+  }
 }
 
 .footer {
@@ -768,7 +779,7 @@ header .search-bar-container label:hover {
 
 
 .mx-10 {
-  margin: 0 10rem;
+  margin: 0 3rem;
 }
 
 .flex-between {
@@ -776,3 +787,9 @@ header .search-bar-container label:hover {
   display: flex; 
   justify-content: space-between;
   align-items: center; 
+}
+
+.table-text {
+  font-size: 1.4rem;
+
+}
