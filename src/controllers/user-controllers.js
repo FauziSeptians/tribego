@@ -1,3 +1,4 @@
+import { verifyJWT } from "../middleware/auth-middleware.js";
 import { ResponseModel } from "../model/response-model.js";
 import { UserServices } from "../services/user-services.js";
 
@@ -28,7 +29,7 @@ export class userController {
       const data = await UserServices.getUsers();
       return res.status(200).send(new ResponseModel(data, "OK"));
     } catch (error) {
-      next(err);
+      next(error);
     }
   }
 
@@ -46,7 +47,7 @@ export class userController {
 
   static async deleteUsers(req, res, next) {
     try {
-      console.log(req.params.id)
+      console.log(req.params.id);
       await UserServices.deleteUsers(req.params.id);
       return res
         .status(200)

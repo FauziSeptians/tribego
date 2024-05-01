@@ -7,9 +7,9 @@ import { UserModel } from "../model/users-model.js";
 
 export class ReviewServices {
   static async create(requestBody) {
-    const { userId, destinationId, startPoint, Description } = requestBody;
+    const { userId, destinationId, starReview, Description } = requestBody;
     console.log(requestBody);
-    if (!userId || !destinationId || !startPoint || !Description) {
+    if (!userId || !destinationId || !starReview || !Description) {
       throw new ResponseError(400, "Data must be filled");
     }
 
@@ -32,7 +32,7 @@ export class ReviewServices {
     await ReviewModel.create({
       userId: userId,
       destinationId: destinationId,
-      startPoint: startPoint,
+      starReview: starReview,
       Description: Description,
     });
 
@@ -60,9 +60,9 @@ export class ReviewServices {
       throw new ResponseError(404, "Id not found");
     }
 
-    const { userId, destinationId, startPoint, Description } = requestBody;
+    const { userId, destinationId, starReview, Description } = requestBody;
     console.log(requestBody);
-    if (!userId || !destinationId || !startPoint || !Description) {
+    if (!userId || !destinationId || !starReview || !Description) {
       throw new ResponseError(400, "Data must be filled");
     }
 
@@ -89,7 +89,7 @@ export class ReviewServices {
       {
         userId: userId,
         destinationId: destinationId,
-        startPoint: startPoint,
+        starReview: starReview,
         Description: Description,
       }
     );

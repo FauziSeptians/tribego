@@ -4,6 +4,7 @@ import { ReviewServices } from "../services/review-services.js";
 export class reviewController {
   static async create(req, res, next) {
     try {
+      console.log(req.body);
       await ReviewServices.create(req.body);
 
       return res

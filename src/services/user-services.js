@@ -2,6 +2,8 @@ import { ResponseError } from "../error/errors.js";
 import hashPassword from "../utils/hashPassword.js";
 import { UserModel } from "../model/users-model.js";
 import CompareHashPassword from "../utils/compareHashPassword.js";
+import jwt from "jsonwebtoken"
+import { jwtSecret } from "../middleware/auth-middleware.js";
 
 export class UserServices {
   static async create(requestBody) {
@@ -64,7 +66,14 @@ export class UserServices {
       throw new ResponseError(400, "Email or Password incorrect");
     }
 
-    return isEmailExists;
+    const payload = { username: isEmailExists.name };
+    const token = jwt.sign(payload, jwtSecret, { expiresIn: "2h" });
+    const data = UserModel.updateOne(
+      { email: isEmailExists.email },
+      { $set: { token: token } }
+    );
+
+    return data;
   }
 
   static async getUsers() {
@@ -105,7 +114,7 @@ export class UserServices {
   }
 
   static async deleteUsers(id) {
-    console.log(id)
+    console.log(id);
     if (!id) {
       throw new ResponseError(404, "Please insert id first");
     }
@@ -118,7 +127,6 @@ export class UserServices {
       throw new ResponseError(404, "Data not found");
     }
 
-
-    await UserModel.deleteOne({_id : id})
+    await UserModel.deleteOne({ _id: id });
   }
 }

@@ -6,7 +6,6 @@ import { destinationController } from "../controllers/destination-controller.js"
 import { servicesController } from "../controllers/services-controller.js";
 import { reviewController } from "../controllers/review-controller.js";
 import { bookController } from "../controllers/book-controller.js";
-import passport  from "../config/passport.js"
 
 export const storage2 = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -20,15 +19,11 @@ export const storage2 = multer.diskStorage({
 export const publicRouter = express.Router();
 const uploadImage = multer({ storage: storage2 });
 
-publicRouter.get(
-  "/test",
-  passport.authenticate("local", { failureRedirect: "/login" }),
-  (req, res) => {
-    return res.status(200).send({
-      message: "test",
-    });
-  }
-);
+publicRouter.post("/test", (req, res) => {
+  return res.status(200).send({
+    message: "test",
+  });
+});
 
 // -- User
 publicRouter.post("/api/create/user", userController.create);
