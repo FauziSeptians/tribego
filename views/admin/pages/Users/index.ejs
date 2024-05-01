@@ -5,19 +5,195 @@
 
     <%- include('../../layouts/navigation.ejs') %>
 
-    <div class="min-h-full">
-        USERS
-        <% data.forEach(value => { %>
+    <div class="admin-users min-h-full mx-10 table-text">
+        <div class="flex-between">
           <div>
-            <%= value.id  %>
-            <%= value.name  %>
+            <h1>USERS</h1>
           </div>
-        <% }) %>
+          <div class="btn-create" onclick="openCreateModal()">
+            Create
+          </div>
+        </div>
+        <table class="rwd-table ">
+          <tbody>
+            <tr>
+              <th>Id</th>
+              <th>Username</th>
+              <th>Email</th>
+              <th class="text-center">Action</th>
+            </tr>
+            <% data.forEach(value => { %>
+              <tr>
+                <td>
+                  <div class="isMobile">ID :</div>
+                  <%= value.id  %>
+                </td>
+                <td>
+                  <div class="isMobile">Name :</div>
+                  <%= value.name  %>
+                </td>
+                <td>
+                  <div class="isMobile">Email :</div>
+                  <%= value.email  %>
+                </td>
+                <td class="text-center action">
+                  <div class="flex gap-1">
+                    <div class="btn-view" onclick="openViewModal('<%= JSON.stringify(value) %>')">
+                      <div>View</div>
+                    </div>
+                    <div class="btn-delete" onclick="openDeleteModal('<%= value.id %>')">
+                        <div>Delete</div>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+    </div>
+
+    <div id="createModal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeCreateModal()">&times;</span>
+          <div>
+            <div>
+              <h1 for="viewId">Id</h1>
+              <p id="viewId"></p>
+            </div>
+            <div>
+              <h1 for="viewName">Name</h1>
+              <p id="viewName"></p>
+            </div>
+            <div>
+              <h1 for="viewEmail">Email</h1>
+              <p id="viewEmail"></p>
+            </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="deleteModal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeDeleteModal()">&times;</span>
+        <p>Are you sure you want to delete this user?</p>
+        <div class="flex gap-1">
+          <div>
+            <form id="deleteForm" action="/user/0" method="post">
+              <button type="submit" class="px-4 py-2 text-center rounded-lg bg-red-600 hover:bg-red-400 text-white w-full h-full">Yes</button>
+            </form>
+          </div>
+          <div>
+            <button onclick="closeDeleteModal()">No</button>
+          </div>
+        </div>
+      </div>
     </div>
 
 
     <%- include('../../layouts/footer.ejs') %>
   </body>
 </html>
+
+<script>
+  let idForDelete = null; 
+
+  function openCreateModal() {
+    var createModal = document.getElementById("createModal");
+    createModal.style.display = "flex";
+
+    document.getElementById("createForm").action = "/user/create/";
+    document.getElementById("createTitle").value = "";
+    document.getElementById("createLocation").value = "";
+    document.getElementById("createDescription").value = "";
+    document.getElementById("createPrice").value = "";
+    document.getElementById("createPromo").value = "";
+  }
+
+  function closeCreateModal() {
+    var createModal = document.getElementById("createModal");
+    createModal.style.display = "none";
+  }
+
+  function openViewModal(data) {
+    var editModal = document.getElementById("createModal");
+    editModal.style.display = "flex";
+
+    const item = JSON.parse(data);
+
+    document.getElementById("viewId").innerText = item.id
+    document.getElementById("viewName").innerText = item.name
+    document.getElementById("viewEmail").innerText = item.email
+  }
+
+  
+
+  function openDeleteModal(id) {
+    var deleteModal = document.getElementById("deleteModal");
+    deleteModal.style.display = "flex";
+
+    document.getElementById("deleteForm").action = "/user/delete/" + id + "?_method=DELETE";
+  }
+
+
+  function closeDeleteModal() {
+    var deleteModal = document.getElementById("deleteModal");
+    deleteModal.style.display = "none";
+  }
+
+  function confirmDelete() {
+    window.location.href = "/user/delete/" + idForDelete;
+
+    closeDeleteModal();
+  }
+
+</script>
+
+<style>
+.modal {
+  display: none;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 99999; 
+}
+
+
+.modal-content {
+  background: white;
+  padding: 30px;
+  position: relative;
+  margin: auto; 
+}
+
+
+.close {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 10px;
+  background-color: red;
+  width: 20px;
+  height: 20px;
+  font-size: 20px;
+  display: flex; 
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 800;
+  cursor: pointer; 
+  border-radius: 100%;
+}
+
+
+
+</style>
+
+
+
 
 

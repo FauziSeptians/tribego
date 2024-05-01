@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include('../../layouts/header.ejs') %>
+  <body>
+    
+    <%- include('../../layouts/navigation.ejs') %>
+
+    <section class="contact min-h-full">
+      <h1 class="heading">
+        <span>C</span>
+        <span>O</span>
+        <span>N</span>
+        <span>T</span>
+        <span>A</span>
+        <span>C</span>
+        <span>T</span>
+      </h1>
+      <div class="row">
+        <div class="image">
+          <img src="assets/contact-img.jpg" alt="Contact Image" />
+        </div>
+        <div class="form-container">
+          <h2>Contact Us</h2>
+          <form action="">
+            <div class="input-group">
+              <input
+                type="text"
+                id="name"
+                name="name"
+                placeholder="Your Name"
+                required
+              />
+              <input
+                type="email"
+                id="email"
+                name="email"
+                placeholder="Your Email"
+                required
+              />
+            </div>
+            <div class="input-group">
+              <input
+                type="tel"
+                id="phone"
+                name="phone"
+                placeholder="Your Phone Number"
+                required
+              />
+              <input
+                type="text"
+                id="subject"
+                name="subject"
+                placeholder="Subject"
+                required
+              />
+            </div>
+            <textarea
+              id="message"
+              name="message"
+              placeholder="Your Message"
+              rows="5"
+              required
+            ></textarea>
+            <button type="submit" class="btn">Send Message</button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <section class="brand-container">
+      <div class="swiper-container brand-slider">
+        <div class="swiper-wrapper">
+          <div class="swiper-slide"><img src="images/1.jpg" alt="" /></div>
+          <div class="swiper-slide"><img src="images/2.jpg" alt="" /></div>
+          <div class="swiper-slide"><img src="images/3.jpg" alt="" /></div>
+          <div class="swiper-slide"><img src="images/4.jpg" alt="" /></div>
+          <div class="swiper-slide"><img src="images/5.jpg" alt="" /></div>
+          <div class="swiper-slide"><img src="images/6.jpg" alt="" /></div>
+        </div>
+      </div>
+    </section>
+
+    <%- include('../../layouts/footer.ejs') %>
+  </body>
+</html>

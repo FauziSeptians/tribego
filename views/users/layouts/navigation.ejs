@@ -1,0 +1,46 @@
+<header>
+  <div id="menu-bar" class="fas fa-bars"></div>
+
+  <a href="/" class="logo">
+    <span id="tri">tri</span><span id="be">be</span><span id="go">go</span>
+  </a>
+
+
+  <nav id="navbar" class="navbar">
+    <a href="/" class="link">home</a>
+    <a href="/destinations" class="link">Destinations</a>
+    <a href="/reviews" class="link">review</a>
+    <a href="/contact" class="link" >contact</a>
+
+    <!-- SEMENTARA -->
+    <a href="admin">view admin</a>
+    <!-- SEMENTARA -->
+
+  </nav>
+
+  <div class="icons">
+    <i class="fas fa-search" id="search-btn"></i>
+    <i class="fas fa-user" id="login-btn"></i>
+    <i class="fas fa-times" id="exit-btn"></i>
+  </div>
+
+  <form action="" class="search-bar-container">
+    <input type="search" id="search-bar" placeholder="search here..." />
+    <label for="search-bar" class="fas fa-search"></label>
+  </form>
+</header>
+
+<script>
+  const navbar = document.getElementById('navbar');
+  const navLinks = navbar.querySelectorAll('a.link');
+  const currentPath = window.location.pathname;
+
+  navLinks.forEach((link) => {
+    if (currentPath === link.getAttribute('href') || currentPath.startsWith(link.getAttribute('href') + '/')) {
+      link.classList.add('active-navbar');
+    }
+  });
+</script>
+
+
+

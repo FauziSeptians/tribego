@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include('../../layouts/header.ejs') %>
+  <body>
+      
+    <%- include('../../layouts/navigation.ejs') %>
+
+    <section class="review min-h-full" id="review">
+      <h1 class="heading">
+        <span>R</span>
+        <span>E</span>
+        <span>V</span>
+        <span>I</span>
+        <span>E</span>
+        <span>W</span>
+      </h1>
+
+      <div class="wrapper">
+
+        <% data.forEach(review => { %>
+
+
+        <div class="slider">
+          <div class="box">
+            <img src="<%= review.user?.image %>" alt="" />
+            <h3><%= review.user?.name %></h3>
+            <p><%= review.user?.email %></p>
+            <div class="stars">
+              <% for (let i = 0; i < 5; i++) { %>
+                <% if (i < review.startPoint) { %>
+                  <i class="fas fa-star"></i>
+                <% } else { %>
+                  <i class="far fa-star"></i>
+                <% } %>
+              <% } %>
+            </div>
+          </div>
+        </div>
+
+        <% }); %>
+
+      </div>
+    </section>
+
+    <section class="brand-container">
+      <div class="swiper-container brand-slider">
+        <div class="swiper-wrapper">
+          <div class="swiper-slide"><img src="images/1.jpg" alt="" /></div>
+          <div class="swiper-slide"><img src="images/2.jpg" alt="" /></div>
+          <div class="swiper-slide"><img src="images/3.jpg" alt="" /></div>
+          <div class="swiper-slide"><img src="images/4.jpg" alt="" /></div>
+          <div class="swiper-slide"><img src="images/5.jpg" alt="" /></div>
+          <div class="swiper-slide"><img src="images/6.jpg" alt="" /></div>
+        </div>
+      </div>
+    </section>
+
+    <%- include('../../layouts/footer.ejs') %>
+  </body>
+</html>
