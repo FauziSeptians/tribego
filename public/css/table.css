@@ -1,5 +1,5 @@
 .rwd-table {
-  margin: auto;
+  margin: 20px auto;
   min-width: 300px;
   max-width: 100%;
   width: 100%;
@@ -8,7 +8,7 @@
 
 .rwd-table tr:first-child {
   border-top: none;
-  background: #428bca;
+  background: #333;
   color: #fff;
 }
 
@@ -19,7 +19,7 @@
 }
 
 .rwd-table tr:nth-child(odd):not(:first-child) {
-  background-color: #ebf3f9;
+  background-color: #ececec;
 }
 
 .rwd-table th {
@@ -34,12 +34,9 @@
   margin-top: .5em;
 }
 
-.rwd-table td:last-child {
-  margin-bottom: .5em;
-}
 
 .rwd-table td:before {
-  content: attr(data-th) ": ";
+  /* content: attr(data-th) ": "; */
   font-weight: bold;
   width: 120px;
   display: inline-block;
@@ -65,14 +62,79 @@
 .rwd-table td {
   padding: .5em 1em;
 }
+
+
+
+.btn-create {
+  background-color: green;
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  padding: 2px 16px;
+  cursor: pointer;
+  border-radius: 15px;
+}
+
+.btn-view {
+  background-color: orange;
+  color: white;
+  font-weight: bold;
+  padding: 2px 10px;
+  cursor: pointer;
+  border-radius: 8px;
+  font-size: 13px
+}
+
+.btn-edit {
+  background-color: blue;
+  color: white;
+  font-weight: bold;
+  padding: 2px 10px;
+  cursor: pointer;
+  border-radius: 8px;
+  font-size: 13px
+}
+
+.btn-delete {
+  background-color: red;
+  color: white;
+  font-weight: bold;
+  padding: 2px 10px;
+  cursor: pointer;
+  border-radius: 8px;
+  font-size: 13px
+}
+
+.isMobile {
+  display: flex;
+}
+
+.rwd-table td .isMobile {
+  font-weight: bold;
+  font-size: 13px
+}
+
+.rwd-table td {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+
 @media screen and (max-width: 601px) {
   .rwd-table tr:nth-child(2) {
     border-top: none;
   }
 }
+
+
 @media screen and (min-width: 600px) {
+  .isMobile {
+    display: none;
+  }
+
   .rwd-table tr:hover:not(:first-child) {
-    background-color: #d8e7f3;
+    background-color: #cdc9c9;
   }
   .rwd-table td:before {
     display: none;
@@ -96,10 +158,19 @@
   }
 }
 
-
 .container {
   display: block;
   text-align: center;
+}
+
+th.text-center {
+  text-align: center;
+}
+
+td.text-center.action {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 @-webkit-keyframes leftRight {

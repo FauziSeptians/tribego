@@ -1,27 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
-  <%- include('layouts/header.ejs') %>
+  <%- include('users/layouts/header.ejs') %>
   <body>
-    <header>
-      <div id="menu-bar" class="fas fa-bars"></div>
 
-      <a href="#" class="logo">
-        <span id="tri">tri</span><span id="be">be</span><span id="go">go</span>
-      </a>
+    <%- include('users/layouts/navigation.ejs') %>
 
-      <%- include('layouts/navigation.ejs') %>
-
-      <div class="icons">
-        <i class="fas fa-search" id="search-btn"></i>
-        <i class="fas fa-user" id="login-btn"></i>
-        <i class="fas fa-times" id="exit-btn"></i>
-      </div>
-
-      <form action="" class="search-bar-container">
-        <input type="search" id="search-bar" placeholder="search here..." />
-        <label for="search-bar" class="fas fa-search"></label>
-      </form>
-    </header>
 
     <div class="login-form-container">
       <i class="fas fa-times" id="form-close"></i>
@@ -349,171 +332,6 @@
       </div>
     </section>
 
-    <section class="review" id="review">
-      <h1 class="heading">
-        <span>R</span>
-        <span>E</span>
-        <span>V</span>
-        <span>I</span>
-        <span>E</span>
-        <span>W</span>
-      </h1>
-
-      <div class="wrapper">
-        <div class="slider">
-          <div class="box">
-            <img src="assets/r (1).jpg" alt="" />
-            <h3>Azizi Asadel</h3>
-            <p>jkt48</p>
-            <div class="stars">
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="far fa-star"></i>
-            </div>
-          </div>
-        </div>
-
-        <div class="slider">
-          <div class="box">
-            <img src="assets/r (2).jpg" alt="" />
-            <h3>Catherine Valencia</h3>
-            <p>jkt48</p>
-            <div class="stars">
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="far fa-star"></i>
-            </div>
-          </div>
-        </div>
-
-        <div class="slider">
-          <div class="box">
-            <img src="assets/r (3).jpg" alt="" />
-            <h3>Oline Manuel</h3>
-            <p>jkt48</p>
-            <div class="stars">
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="far fa-star"></i>
-            </div>
-          </div>
-        </div>
-
-        <div class="slider">
-          <div class="box">
-            <img src="assets/r (4).jpg" alt="" />
-            <h3>Freya</h3>
-            <p>jkt48</p>
-            <div class="stars">
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="far fa-star"></i>
-            </div>
-          </div>
-        </div>
-
-        <div class="slider">
-          <div class="box">
-            <img src="assets/r (5).jpg" alt="" />
-            <h3>Davina Veronica</h3>
-            <p>jkt48</p>
-            <div class="stars">
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="far fa-star"></i>
-            </div>
-          </div>
-        </div>
-
-        <div class="slider">
-          <div class="box">
-            <img src="assets/r (6).jpg" alt="" />
-            <h3>Reva Fidela</h3>
-            <p>jkt48</p>
-            <div class="stars">
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="far fa-star"></i>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="contact">
-      <h1 class="heading">
-        <span>C</span>
-        <span>O</span>
-        <span>N</span>
-        <span>T</span>
-        <span>A</span>
-        <span>C</span>
-        <span>T</span>
-      </h1>
-      <div class="row">
-        <div class="image">
-          <img src="assets/contact-img.jpg" alt="Contact Image" />
-        </div>
-        <div class="form-container">
-          <h2>Contact Us</h2>
-          <form action="">
-            <div class="input-group">
-              <input
-                type="text"
-                id="name"
-                name="name"
-                placeholder="Your Name"
-                required
-              />
-              <input
-                type="email"
-                id="email"
-                name="email"
-                placeholder="Your Email"
-                required
-              />
-            </div>
-            <div class="input-group">
-              <input
-                type="tel"
-                id="phone"
-                name="phone"
-                placeholder="Your Phone Number"
-                required
-              />
-              <input
-                type="text"
-                id="subject"
-                name="subject"
-                placeholder="Subject"
-                required
-              />
-            </div>
-            <textarea
-              id="message"
-              name="message"
-              placeholder="Your Message"
-              rows="5"
-              required
-            ></textarea>
-            <button type="submit" class="btn">Send Message</button>
-          </form>
-        </div>
-      </div>
-    </section>
-
     <section class="brand-container">
       <div class="swiper-container brand-slider">
         <div class="swiper-wrapper">
@@ -527,6 +345,6 @@
       </div>
     </section>
 
-    <%- include('layouts/footer.ejs') %>
+    <%- include('users/layouts/footer.ejs') %>
   </body>
 </html>
