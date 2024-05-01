@@ -2,25 +2,15 @@ import express from "express";
 import { publicRouter } from "../routes/public-router.js";
 import bodyParser from "body-parser";
 import multer from "multer";
-
+import getData from "../../dummyData.js";
+import { errorMiddleware } from "../middleware/errors-middleware.js";
+import { connectDatabase } from "./db.js";
 
 export const apps = express();
-import getData from "../../dummyData.js"
 
-apps.use(publicRouter);
-apps.use(bodyParser.urlencoded({ extended: true }));
-apps.use(bodyParser.json());
+connectDatabase();
 
-// get data dummy
-const myData = getData()
-const users = myData.Users; // this is how to get data users
-// get data dummy
-
-apps.set("view engine", "ejs");
-
-apps.use(express.static("public"));
-
-const storage = multer.diskStorage({
+export const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, "public/uploads/");
   },
@@ -28,6 +18,22 @@ const storage = multer.diskStorage({
     cb(null, Date.now() + "-" + file.originalname);
   },
 });
+const upload = multer({ storage: storage });
+
+apps.use(bodyParser.json());
+apps.use(bodyParser.urlencoded({ extended: true }));
+
+apps.use(publicRouter);
+apps.use(errorMiddleware);
+
+// get data dummy
+const myData = getData();
+const users = myData.Users; // this is how to get data users
+// get data dummy
+
+apps.set("view engine", "ejs");
+
+apps.use(express.static("public"));
 
 // ROUTES
 // USER
@@ -40,8 +46,6 @@ apps.get("/admin/users", adminUsers);
 apps.get("/admin/destinations", adminDestinations);
 apps.get("/admin/reviews", adminReviews);
 apps.get("/admin/contact", adminContact);
-
-const upload = multer({ storage: storage });
 
 apps.post(
   "/destination/create",

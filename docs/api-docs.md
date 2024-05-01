@@ -85,7 +85,7 @@ response:
 ```json
     response :  {
         statusCode : 200,
-        message : "Successfully updated data user",
+        message : "Successfully deleted data user",
         additionalData : {}
     }
 ```
