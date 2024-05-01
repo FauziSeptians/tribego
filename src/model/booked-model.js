@@ -1,4 +1,4 @@
-import { type } from "express/lib/response";
+
 import mongoose from "mongoose";
 
 const bookedSchemas = mongoose.Schema({
@@ -14,6 +14,7 @@ const bookedSchemas = mongoose.Schema({
   },
   guest: {
     type: Number,
+    min : 1,
     require: true,
   },
   startBook: {

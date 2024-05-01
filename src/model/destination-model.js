@@ -1,17 +1,19 @@
-import { type } from "express/lib/response";
-import mongoose, { mongo } from "mongoose";
+import mongoose from "mongoose";
 
 const destinationSchemas = mongoose.Schema({
   Title: {
-    type: string,
+    type: String,
     require: true,
   },
   Location: {
-    type: string,
+    type: String,
     require: true,
   },
+  Images: {
+    type: String,
+  },
   Description: {
-    type: string,
+    type: String,
     require: true,
   },
   Price: {
@@ -24,4 +26,7 @@ const destinationSchemas = mongoose.Schema({
   },
 });
 
-export const DestinationModel = mongoose.model("Destination", destinationSchemas);
+export const DestinationModel = mongoose.model(
+  "Destination",
+  destinationSchemas
+);
