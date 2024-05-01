@@ -5,6 +5,8 @@ import multer from "multer";
 import getData from "../../dummyData.js";
 import { errorMiddleware } from "../middleware/errors-middleware.js";
 import { connectDatabase } from "./db.js";
+import passport from "../config/passport.js";
+import session from "express-session";
 
 export const apps = express();
 
@@ -19,6 +21,17 @@ export const storage = multer.diskStorage({
   },
 });
 const upload = multer({ storage: storage });
+
+// Passport middleware
+apps.use(
+  session({
+    secret: "your_secret_key",
+    resave: false,
+    saveUninitialized: false,
+  })
+);
+apps.use(passport.initialize());
+apps.use(passport.session());
 
 apps.use(bodyParser.json());
 apps.use(bodyParser.urlencoded({ extended: true }));
