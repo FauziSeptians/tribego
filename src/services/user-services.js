@@ -47,13 +47,11 @@ export class UserServices {
 
     const isEmailExists = await UserModel.findOne({
       email: Email,
-    }).select("name email token");
+    });
 
     if (!isEmailExists) {
       throw new ResponseError(404, "Data not found");
     }
-
-    console.log(isEmailExists);
 
     const isPasswordCorrect = CompareHashPassword(
       Password,
@@ -73,7 +71,12 @@ export class UserServices {
       { $set: { token: token } }
     );
 
-    return isEmailExists;
+    const data = await UserModel.findOne({
+      email: Email,
+    }).select("name email token")
+
+    return data;
+
   }
 
   static async getUsers() {
