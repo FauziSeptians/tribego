@@ -7,10 +7,14 @@ import { jwtSecret } from "../middleware/auth-middleware.js";
 
 export class UserServices {
   static async create(requestBody) {
-    const { Email, Password, Name } = requestBody;
+    const { Email, Password, Name, Role } = requestBody;
 
     if (!Email || !Password || !Name) {
       throw new ResponseError(400, "Data must be filled");
+    }
+
+    if (Role && !["Admin", "User"].includes(Role)) {
+      throw new ResponseError(404, "Role not found");
     }
 
     const isDataExists = await UserModel.find({
@@ -33,6 +37,7 @@ export class UserServices {
       name: Name,
       email: Email,
       password: hashPassword(Password),
+      Role: Role,
     });
 
     return;
@@ -73,10 +78,9 @@ export class UserServices {
 
     const data = await UserModel.findOne({
       email: Email,
-    }).select("name email token")
+    }).select("name email token");
 
     return data;
-
   }
 
   static async getUsers() {
