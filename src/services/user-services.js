@@ -2,7 +2,7 @@ import { ResponseError } from "../error/errors.js";
 import hashPassword from "../utils/hashPassword.js";
 import { UserModel } from "../model/users-model.js";
 import CompareHashPassword from "../utils/compareHashPassword.js";
-import jwt from "jsonwebtoken"
+import jwt from "jsonwebtoken";
 import { jwtSecret } from "../middleware/auth-middleware.js";
 
 export class UserServices {
@@ -47,7 +47,7 @@ export class UserServices {
 
     const isEmailExists = await UserModel.findOne({
       email: Email,
-    });
+    }).select("name email token");
 
     if (!isEmailExists) {
       throw new ResponseError(404, "Data not found");
@@ -68,12 +68,12 @@ export class UserServices {
 
     const payload = { username: isEmailExists.name };
     const token = jwt.sign(payload, jwtSecret, { expiresIn: "2h" });
-    const data = UserModel.updateOne(
+    UserModel.updateOne(
       { email: isEmailExists.email },
       { $set: { token: token } }
     );
 
-    return data;
+    return isEmailExists;
   }
 
   static async getUsers() {
