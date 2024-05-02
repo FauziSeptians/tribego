@@ -6,6 +6,7 @@ import { destinationController } from "../controllers/destination-controller.js"
 import { servicesController } from "../controllers/services-controller.js";
 import { reviewController } from "../controllers/review-controller.js";
 import { bookController } from "../controllers/book-controller.js";
+import { contactController } from "../controllers/contact-controller.js";
 
 export const storage2 = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -30,7 +31,7 @@ publicRouter.post("/api/create/user", userController.create);
 publicRouter.get("/api/users", userController.getUsers);
 publicRouter.post("/api/verify/user", userController.login);
 publicRouter.put("/api/update/user/:id", userController.update);
-publicRouter.delete("/api/user/:id", userController.deleteUsers);
+publicRouter.delete("/api/users/:id", userController.deleteUsers);
 
 // -- Gallery
 publicRouter.post(
@@ -54,7 +55,7 @@ publicRouter.post(
   destinationController.create
 );
 publicRouter.put(
-  "/api/update/destionations/:id",
+  "/api/update/destinations/:id",
   uploadImage.single("galleryImage"),
   destinationController.update
 );
@@ -72,8 +73,12 @@ publicRouter.post(
 
 publicRouter.get("/api/services", servicesController.getServices);
 publicRouter.delete("/api/services/:id", servicesController.deleteServices);
-publicRouter.use(uploadImage.array());
-publicRouter.put("/api/update/services/:id", servicesController.update);
+// publicRouter.use(uploadImage.array());
+publicRouter.put(
+  "/api/update/services/:id",
+  uploadImage.single("galleryImage"),
+  servicesController.update
+);
 
 // -- review
 publicRouter.post("/api/create/review", reviewController.create);
@@ -86,3 +91,8 @@ publicRouter.post("/api/create/book", bookController.create);
 publicRouter.get("/api/book", bookController.getBook);
 publicRouter.delete("/api/book/:id", bookController.deleteBook);
 publicRouter.put("/api/update/book/:id", bookController.update);
+
+//  -- Contact
+publicRouter.post("/api/contact", contactController.create);
+publicRouter.get("/api/contact", contactController.getContact);
+publicRouter.delete("/api/contact/:id", contactController.deleteContact);

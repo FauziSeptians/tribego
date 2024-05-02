@@ -18,7 +18,7 @@ export class reviewController {
   static async getReviews(req, res, next) {
     try {
       const data = await ReviewServices.getReviews();
-      return res.status(200).send(new ResponseModel(data, "OK"));
+      return data;
     } catch (err) {
       next(err);
     }

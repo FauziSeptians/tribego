@@ -5,17 +5,17 @@ import fs from "fs";
 export class ServicesService {
   static async create(images, requestBody) {
     const newData = JSON.parse(requestBody);
-    const { title, description } = newData;
+    const { Title, Description } = newData;
     const Images = images;
 
-    if (!title || !description || !images) {
+    if (!Title || !Description || !images) {
       throw new ResponseError(400, "Data must be filled");
     }
 
     await ServicesModel.create({
       Images: Images,
-      Title: title,
-      Description: description,
+      Title: Title,
+      Description: Description,
     });
 
     return;
@@ -30,13 +30,13 @@ export class ServicesService {
     const Images = images;
     const newData = JSON.parse(data);
 
-    const { title, description } = newData;
+    const { Title, Description } = newData;
 
     if (!id) {
       throw new ResponseError(404, "Please insert id first");
     }
 
-    if (!title || !description) {
+    if (!Title || !Description) {
       throw new ResponseError(404, "Data must be filled");
     }
 
@@ -63,8 +63,8 @@ export class ServicesService {
         _id: id,
       },
       {
-        Title: title,
-        Description: description,
+        Title: Title,
+        Description: Description,
         Images: Images,
       }
     );

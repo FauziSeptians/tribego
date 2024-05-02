@@ -9,38 +9,182 @@
   <nav id="navbar" class="navbar">
     <a href="/" class="link">home</a>
     <a href="/destinations" class="link">Destinations</a>
+    <% if(isLogin || userId) { %>
+      <a href="/books">My Bookings</a>
+    <% } %>
     <a href="/reviews" class="link">review</a>
     <a href="/contact" class="link" >contact</a>
-
-    <!-- SEMENTARA -->
-    <a href="admin">view admin</a>
-    <!-- SEMENTARA -->
-
   </nav>
 
   <div class="icons">
-    <i class="fas fa-search" id="search-btn"></i>
-    <i class="fas fa-user" id="login-btn"></i>
-    <i class="fas fa-times" id="exit-btn"></i>
+    <div>
+      <i class="fas fa-search" id="search-btn"></i>
+    </div>
+
+
+    <%= userName %>
+    <%= userRole  %>
+    <% if (userId) { %>
+      <div class="dropdown" id="menu-dropdown">
+        <i class="fas fa-user"></i>
+        <div class="dropdown-content">
+          <% if (userRole === "admin" || userEmail === "admin@gmail.com") { %>
+            <a href="/admin">Admin Panel</a>
+          <% } %>
+          <a href="/logout">Logout</a>
+        </div>
+      </div>
+      <% } else { %>
+      <div class="dropdown" id="menu-dropdown">
+        <i class="fas fa-bars" id="menu-btn"></i>
+        <div class="dropdown-content">
+          <div id="login-btn">Login</div>
+          <div id="register-btn" >Register</div>
+        </div>
+      </div>
+      <% } %>
+    </div>
+
+
+
+
+
+
   </div>
 
   <form action="" class="search-bar-container">
     <input type="search" id="search-bar" placeholder="search here..." />
     <label for="search-bar" class="fas fa-search"></label>
   </form>
+
+
+
+    <div class="login-form-container">
+      <i class="fas fa-times" id="form-close"></i>
+
+      <form id="login-form" action="/login" method="POST">
+        <h3>login</h3>
+        <input type="email" id="Email" class="box" placeholder="enter your email" />
+        <input type="password" id="Password" class="box" placeholder="enter your password" />
+        <input type="submit" value="login now" class="btn" />
+        <input type="checkbox" id="remember" />
+        <label for="remember">remember me</label>
+        <!-- <p>forget password? <a href="#">click here</a></p> -->
+        <p>don't have an account? <a href="#" id="register-btn">register now</a></p>
+      </form>
+    </div>
+
+
+    <div class="register-form-container">
+      <i class="fas fa-times" id="form-close"></i>
+
+      <form id="register-form" action="">
+        <h3>register</h3>
+        <input type="name" class="box" id="RegisterName" placeholder="enter your name" />
+        <input type="email" class="box" id="RegisterEmail" placeholder="enter your email" />
+        <input type="password" class="box" id="RegisterPassword" placeholder="enter your password" />
+        <input type="submit" value="register now" class="btn" />
+        <input type="checkbox" id="remember" />
+        <label for="remember">remember me</label>
+        <!-- <p>forget password? <a href="#">click here</a></p> -->
+        <p>already have an account? <a href="#" id="login-btn">login now</a></p>
+      </form>
+    </div>
+
+
+
 </header>
 
 <script>
-  const navbar = document.getElementById('navbar');
-  const navLinks = navbar.querySelectorAll('a.link');
-  const currentPath = window.location.pathname;
+  var dropdown = document.getElementById('menu-dropdown');
 
-  navLinks.forEach((link) => {
-    if (currentPath === link.getAttribute('href') || currentPath.startsWith(link.getAttribute('href') + '/')) {
-      link.classList.add('active-navbar');
-    }
+  dropdown.addEventListener('click', function() {
+    var dropdownContent = dropdown.querySelector('.dropdown-content');
+    dropdownContent.classList.toggle('show');
   });
+
+
+  document.addEventListener("DOMContentLoaded", function () {
+    const loginForm = document.getElementById("login-form");
+    const loginFormContainer = document.querySelector(".login-form-container");
+    const exitBtn = document.getElementById("form-close");
+
+    loginForm.addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      const Email = document.getElementById("Email").value;
+      const Password = document.getElementById("Password").value;
+
+      const userData = { Email: Email, Password: Password };
+
+      try {
+        const response = await fetch('/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(userData)
+        });
+
+        loginFormContainer.classList.remove("active");
+        exitBtn.classList.remove("active");
+        location.reload();
+
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    });
+
+
+    const registerForm = document.getElementById("register-form");
+    const registerFormContainer = document.querySelector(".register-form-container");
+
+    registerForm.addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      const Email = document.getElementById("RegisterEmail").value;
+      const Name = document.getElementById("RegisterName").value;
+      const Password = document.getElementById("RegisterPassword").value;
+
+      const userData = { Name: Name, Email: Email, Password: Password };
+
+      console.log(userData);
+
+      try {
+        const response = await fetch('/register', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(userData)
+        });
+
+        loginFormContainer.classList.remove("active");
+        exitBtn.classList.remove("active");
+
+
+        await fetch('/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(userData)
+        });
+
+        location.reload();
+
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    });
+  });
+
 </script>
+
+
+
+
+
 
 
 

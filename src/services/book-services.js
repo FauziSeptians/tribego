@@ -7,8 +7,8 @@ import { UserModel } from "../model/users-model.js";
 
 export class BookServices {
   static async create(requestBody) {
-    const { userId, destinationId, guest, startBook, endBook } = requestBody;
     console.log(requestBody);
+    const { userId, destinationId, guest, startBook, endBook } = requestBody;
     if (!userId || !destinationId || !guest || !startBook || !endBook) {
       throw new ResponseError(400, "Data must be filled");
     }
@@ -53,6 +53,26 @@ export class BookServices {
     return data;
   }
 
+  static async getBookByIdUser(id) {
+    if (!id) {
+      throw new ResponseError(400, "Please insert id first");
+    }
+
+    const isDataExists = await BookedModel.find({
+      userId: id,
+    });
+
+    if (isDataExists == 0) {
+      throw new ResponseError(404, "Data not found");
+    }
+
+    const data = await BookedModel.find({
+      userId: id,
+    });
+
+    return data;
+  }
+
   static async update(requestBody, id) {
     if (!id) {
       throw new ResponseError(400, "Please insert id first");
@@ -90,7 +110,6 @@ export class BookServices {
     if (new Date(startBook) > new Date(endBook)) {
       throw new ResponseError(400, "Start booked not allowed after end booked");
     }
-
 
     await BookedModel.findOneAndUpdate(
       {

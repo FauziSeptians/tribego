@@ -178,7 +178,8 @@ header .search-bar-container label:hover {
   color: var(--orange);
 }
 
-.login-form-container {
+.login-form-container,
+.register-form-container {
   position: fixed;
   top: -120%;
   left: 0;
@@ -191,11 +192,13 @@ header .search-bar-container label:hover {
   justify-content: center;
 }
 
-.login-form-container.active {
+.login-form-container.active,
+.register-form-container.active {
   top: 0;
 }
 
-.login-form-container form {
+.login-form-container form,
+.register-form-container form {
   margin: 2rem;
   padding: 1.5rem 2rem;
   border-radius: 0.5rem;
@@ -203,7 +206,8 @@ header .search-bar-container label:hover {
   width: 50rem;
 }
 
-.login-form-container form h3 {
+.login-form-container form h3,
+.register-form-container form h3 {
   font-size: 3rem;
   color: #444;
   text-transform: uppercase;
@@ -211,7 +215,8 @@ header .search-bar-container label:hover {
   padding: 1rem 0;
 }
 
-.login-form-container form .box {
+.login-form-container form .box,
+.register-form-container form .box {
   width: 100%;
   padding: 1rem;
   font-size: 1.7rem;
@@ -221,39 +226,47 @@ header .search-bar-container label:hover {
   text-transform: none;
 }
 
-.login-form-container form .box:focus {
+.login-form-container form .box:focus,
+.register-form-container form .box:focus {
   border-color: var(--orange);
 }
 
-.login-form-container form #remember {
+.login-form-container form #remember,
+.register-form-container form #remember {
   margin: 2rem 0;
 }
 
-.login-form-container form label {
+.login-form-container form label,
+.register-form-container form label {
   font-size: 1.5rem;
 }
 
-.login-form-container form .btn {
+.login-form-container form .btn,
+.register-form-container form .btn {
   display: block;
   width: 100%;
 }
 
-.login-form-container form p {
+.login-form-container form p,
+.register-form-container form p {
   padding: 0.5rem 0;
   font-size: 1.5rem;
   color: #666;
 }
 
-.login-form-container form p a {
+.login-form-container form p a,
+.register-form-container form p a {,
   color: var(--orange);
 }
 
-.login-form-container form p a:hover {
+.login-form-container form p a:hover,
+.register-form-container form p a:hover {
   color: #333;
   text-decoration: underline;
 }
 
-.login-form-container #form-close {
+.login-form-container #form-close,
+.register-form-container #form-close {
   position: absolute;
   top: 2rem;
   right: 3rem;
@@ -547,7 +560,7 @@ header .search-bar-container label:hover {
 }
 
 .contact {
-  padding: 4rem 0;
+  /* padding: 4rem ; */
 }
 
 .contact .row {
@@ -720,6 +733,34 @@ header .navbar a.active-navbar {
   height: auto;
   display: block;
 }
+.dropdown {
+  position: relative;
+}
+.dropdown-content {
+  display: none;
+}
+
+.dropdown-content.show {
+  display: block;
+  position: absolute;
+  background-color: #f9f9f9;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.4);
+  z-index: 1;
+  font-size: 16px;
+  right: 0;
+  min-width: 140px;
+} 
+
+.dropdown-content a,
+.dropdown-content div {
+  color: black;
+  padding: 10px 14px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-content a:hover,
+.dropdown-content div:hover {background-color: #f1f1f1;}
 
 @media (max-width: 768px) {
   .brand-slider .swiper-slide img {

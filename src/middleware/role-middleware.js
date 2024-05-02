@@ -1,11 +1,11 @@
 export const RoleMiddleware = (req, res, next) => {
-  const requestedPath = req.originalUrl;
-
-  if (req.user.role == "admin" && requestedPath.includes("admin")) {
-    next();
-  } else {
-    res.redirect("/");
+  console.log(req.session);
+  if (
+    req.session?.userRole == "Admin" ||
+    req.session?.userEmail == "admin@gmail.com"
+  ) {
+    return next();
   }
 
-  next();
+  res.redirect("/");
 };

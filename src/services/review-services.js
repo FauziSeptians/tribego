@@ -53,7 +53,7 @@ export class ReviewServices {
       throw new ResponseError(400, "Please insert id first");
     }
     const isIdExists = await ReviewModel.find({
-      _id : id,
+      _id: id,
     }).countDocuments();
 
     if (isIdExists == 0) {

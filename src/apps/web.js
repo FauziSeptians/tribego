@@ -6,10 +6,21 @@ import getData from "../../dummyData.js";
 import { errorMiddleware } from "../middleware/errors-middleware.js";
 import { connectDatabase } from "./db.js";
 import methodOverride from "method-override";
-import { verifyJWT } from "../middleware/auth-middleware.js";
+import { destinationController } from "../controllers/destination-controller.js";
+import { servicesController } from "../controllers/services-controller.js";
+import { reviewController } from "../controllers/review-controller.js";
+import { userController } from "../controllers/user-controllers.js";
+import { galleryController } from "../controllers/gallery-controller.js";
+import { bookController } from "../controllers/book-controller.js";
+import { verifyLogin } from "../middleware/auth-middleware.js";
 import path, { dirname } from "path";
 import fs from "fs";
-import {RoleMiddleware} from "../middleware/role-middleware.js"
+import { RoleMiddleware } from "../middleware/role-middleware.js";
+import session from "express-session";
+import { UserServices } from "../services/user-services.js";
+import { DestinationServices } from "../services/destination-services.js";
+import { contactController } from "../controllers/contact-controller.js";
+import { BookServices } from "../services/book-services.js";
 
 export const apps = express();
 
@@ -31,6 +42,30 @@ apps.use(publicRouter);
 apps.use(errorMiddleware);
 
 apps.use(methodOverride("_method"));
+
+apps.use(
+  session({
+    secret: "secret",
+    // resave: false,
+    saveUninitialized: true,
+    cookie: {
+      maxAge: 1000 * 60 * 60 * 2,
+    },
+  })
+);
+
+apps.use((req, res, next) => {
+  res.locals = {
+    ...res.locals,
+    userId: req.session.userId || null,
+    userName: req.session.userName || null,
+    userEmail: req.session.userEmail || null,
+    userRole: req.session.userRole || null,
+    isLogin: req.session.isLogin || false,
+  };
+
+  next();
+});
 
 apps.get("/api/images/:filename", (req, res) => {
   try {
@@ -73,201 +108,182 @@ apps.use(express.static("public"));
 // USER
 apps.get("/", home);
 apps.get("/destinations", destinations);
+apps.get("/destination/:id", destinationDetail);
+apps.get("/books", verifyLogin, bookings);
 apps.get("/reviews", reviews);
 apps.get("/contact", contact);
 
 // ADMIN
 const routerAdminPage = "admin/pages/";
-apps.get("/admin", verifyJWT, RoleMiddleware, admin);
-apps.get("/admin/users", verifyJWT, RoleMiddleware, adminUsers);
-apps.get("/admin/destinations", verifyJWT, RoleMiddleware, adminDestinations);
-apps.get("/admin/services", verifyJWT, RoleMiddleware, adminServices);
-apps.get("/admin/reviews", verifyJWT, RoleMiddleware, adminReviews);
-apps.get("/admin/contact", verifyJWT, RoleMiddleware, adminContact);
 
-// SERVICES
-apps.post(
-  "/service/create",
-  upload.single("image"),
-  verifyJWT,
-  RoleMiddleware,
-  createService
-);
-apps.patch(
-  "/service/update/:id",
-  upload.single("image"),
-  verifyJWT,
-  RoleMiddleware,
-  updateService
-);
-apps.delete("/service/delete/:id", verifyJWT, RoleMiddleware, deleteService);
+apps.get("/admin", verifyLogin, RoleMiddleware, admin);
+apps.get("/admin/users", verifyLogin, RoleMiddleware, adminUsers);
+apps.get("/admin/destinations", verifyLogin, RoleMiddleware, adminDestinations);
+apps.get("/admin/services", verifyLogin, RoleMiddleware, adminServices);
+apps.get("/admin/bookings", verifyLogin, RoleMiddleware, adminBooking);
+apps.get("/admin/gallery", verifyLogin, RoleMiddleware, adminGallery);
+apps.get("/admin/reviews", verifyLogin, RoleMiddleware, adminReviews);
+apps.get("/admin/contact", verifyLogin, RoleMiddleware, adminContact);
 
-// DESTINATIONS
-apps.post(
-  "/destination/create",
-  upload.single("image"),
-  verifyJWT,
-  RoleMiddleware,
-  createDestination
-);
-apps.patch(
-  "/destination/update/:id",
-  upload.single("image"),
-  verifyJWT,
-  RoleMiddleware,
-  updateDestination
-);
-apps.delete(
-  "/destination/delete/:id",
-  verifyJWT,
-  RoleMiddleware,
-  deleteDestination
-);
+apps.post("/login", login);
+apps.post("/register", register);
+apps.get("/logout", logout);
+
 // END ROUTES
 
 // METHODS
-function home(req, res) {
-  res.render("index");
+async function home(req, res) {
+  res.render("index", {
+    dataServices: await servicesController.getServices(),
+    dataGallery: await galleryController.getGallery(),
+  });
 }
 
-function destinations(req, res) {
+async function destinations(req, res) {
+  const data = await destinationController.getDestination();
+
+  function rupiah(num) {
+    return new Intl.NumberFormat("id-ID", {
+      style: "currency",
+      currency: "IDR",
+    })
+      .format(num)
+      .replace("Rp", "Rp ");
+  }
+
+  console.log(data);
+
+  const filterData = data.map((item) => {
+    return {
+      ...item,
+      Price: rupiah(item.Price),
+      Promo: rupiah(item.Promo),
+      TotalRupiah: rupiah(item.Price - item.Promo),
+    };
+  });
+
+  console.log(filterData);
   res.render("users/pages/Destinations/index", {
-    data: myData.Destinations,
+    data: filterData,
   });
 }
 
-function reviews(req, res) {
+async function destinationDetail(req, res) {
+  const id = req.params.id;
+  const data = await DestinationServices.getDestinationById(id);
+  res.render("users/pages/Destinations/index", {
+    data: data,
+  });
+}
+
+async function bookings(req, res) {
+  const data = await BookServices.getBookByIdUser(req.session.userId);
+
+  res.render("users/pages/Bookings/index", {
+    data: data,
+  });
+}
+
+async function reviews(req, res) {
   res.render("users/pages/Reviews/index", {
-    data: myData.Reviews,
+    data: await reviewController.getReviews(),
   });
 }
 
-function contact(req, res) {
+async function contact(req, res) {
   res.render("users/pages/Contact/index", {
     data: myData.Destinations,
   });
 }
 
 function admin(req, res) {
-  res.render("admin/index", { data: myData.Users });
+  const user = res.locals.user;
+
+  console.log(user);
+
+  res.render("admin/index", { data: myData.Users, user });
 }
 
-function adminUsers(req, res) {
-  res.render(`${routerAdminPage}Users/index`, { data: myData.Users });
+async function adminUsers(req, res) {
+  res.render(`${routerAdminPage}Users/index`, {
+    data: await userController.getUsers(),
+  });
 }
 
-function adminDestinations(req, res) {
+async function adminDestinations(req, res) {
   res.render(`${routerAdminPage}Destinations/index`, {
-    data: myData.Destinations,
+    data: await destinationController.getDestination(),
   });
 }
 
-function adminServices(req, res) {
-  res.render(`${routerAdminPage}Services/index`, { data: myData.Services });
-}
-
-function adminReviews(req, res) {
-  res.render(`${routerAdminPage}Reviews/index`, { data: myData.Reviews });
-}
-
-function adminContact(req, res) {
-  res.render(`${routerAdminPage}Contact/index`, { data: myData.Contact });
-}
-
-function createDestination(req, res) {
-  const title = req.body.createTitle;
-  const location = req.body.createLocation;
-  const description = req.body.createDescription;
-  const price = req.body.createPrice;
-  const promo = req.body.createPromo;
-
-  if (!req.file) {
-    return res.status(400).send("No file uploaded.");
-  }
-
-  const imagePath = req.file.path;
-
-  const newDestination = {
-    id: myData.Destinations.length + 1,
-    title: title,
-    location: location,
-    description: description,
-    price: price,
-    promo: promo,
-    imagePath: imagePath,
-  };
-
-  console.log(newDestination);
-}
-
-function findByIdDestination(req, res) {
-  const id = req.params.id;
-  const destination = myData.Destinations.find((destination) => {
-    return destination.id == id;
+async function adminServices(req, res) {
+  res.render(`${routerAdminPage}Services/index`, {
+    data: await servicesController.getServices(),
   });
-
-  console.log(destination);
-
-  return destination;
 }
 
-function updateDestination(req, res) {
-  const title = req.body.createTitle;
-  const location = req.body.createLocation;
-  const description = req.body.createDescription;
-  const price = req.body.createPrice;
-  const promo = req.body.createPromo;
-  const id = req.params.id;
+async function adminGallery(req, res) {
+  res.render(`${routerAdminPage}Gallery/index`, {
+    data: await galleryController.getGallery(),
+  });
+}
 
-  if (req.file) {
-    // memberikan kondisi jika ada file ubah path di database menjadi yang baru, kalau misal gaada tetap pakai url image sebelumnya
+async function adminBooking(req, res) {
+  res.render(`${routerAdminPage}Bookings/index`, {
+    data: await bookController.getBook(),
+  });
+}
+
+async function adminReviews(req, res) {
+  res.render(`${routerAdminPage}Reviews/index`, {
+    data: await reviewController.getReviews(),
+  });
+}
+
+async function adminContact(req, res) {
+  res.render(`${routerAdminPage}Contact/index`, {
+    data: await contactController.getContact(),
+  });
+}
+
+async function login(req, res) {
+  const data = await UserServices.login(req.body);
+
+  console.log(data);
+
+  if (data) {
+    req.session.userId = data._id;
+    req.session.userEmail = data.email;
+    req.session.userName = data.name;
+    req.session.userRole = data.Role;
+
+    res.redirect("/");
+    return;
+  } else {
+    res.redirect("/login");
+    return;
   }
-
-  const imagePath = req.file.path;
-
-  // OLAH AJA DISINI UPDATE NYA
 }
 
-function deleteDestination(req, res) {
-  const id = req.params.id;
-  console.log(id);
-}
+async function register(req, res) {
+  console.log(req.body);
 
-function createService(req, res) {
-  const title = req.body.createTitle;
-  const description = req.body.createDescription;
+  const data = await UserServices.create(req.body);
 
-  if (!req.file) {
-    return res.status(400).send("No file uploaded.");
+  if (data) {
+    req.session.userId = data._id;
+    req.session.userEmail = data.email;
+    req.session.userName = data.name;
+    req.session.userRole = data.Role;
+
+    res.redirect("/");
+  } else {
+    res.redirect("/login");
+    return;
   }
-
-  const imagePath = req.file.path;
-
-  const newService = {
-    id: myData.Services.length + 1,
-    title: title,
-    description: description,
-    imagePath: imagePath,
-  };
-
-  console.log(newService);
 }
 
-function updateService(req, res) {
-  const title = req.body.createTitle;
-  const description = req.body.createDescription;
-  const id = req.params.id;
-
-  if (req.file) {
-    // memberikan kondisi jika ada file ubah path di database menjadi yang baru, kalau misal gaada tetap pakai url image sebelumnya
-  }
-
-  const imagePath = req.file.path;
-
-  // OLAH AJA DISINI UPDATE NYA
-}
-
-function deleteService(req, res) {
-  const id = req.params.id;
-  console.log(id);
+async function logout(req, res) {
+  req.session.destroy();
+  res.redirect("/");
 }
