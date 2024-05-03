@@ -9,15 +9,15 @@ export class servicesController {
         throw new ResponseError(400, "Invalid form data type");
       }
 
-      console.log(req);
+      // console.log(req);
       const images = req.file;
       const data = req.body.data;
 
-      console.log(images);
+      // console.log(images);
 
-      await ServicesService.create(images.filename, data);
+      const datas = await ServicesService.create(images.filename, data);
 
-      return data;
+      return datas;
     } catch (err) {
       next(err);
     }

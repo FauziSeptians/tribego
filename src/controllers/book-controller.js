@@ -46,7 +46,7 @@ export class bookController {
 
   static async deleteBook(req, res, next) {
     try {
-      console.log(req.params.id);
+      // console.log(req.params.id);
       await BookServices.deleteBook(req.params.id);
       return res
         .status(200)

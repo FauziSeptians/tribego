@@ -121,7 +121,7 @@ apps.get("/admin/users", verifyLogin, RoleMiddleware, adminUsers);
 apps.get("/admin/destinations", verifyLogin, RoleMiddleware, adminDestinations);
 apps.get("/admin/services", verifyLogin, RoleMiddleware, adminServices);
 apps.get("/admin/bookings", verifyLogin, RoleMiddleware, adminBooking);
-apps.get("/admin/gallery", verifyLogin, RoleMiddleware, adminGallery);
+// apps.get("/admin/gallery", verifyLogin, RoleMiddleware, adminGallery);
 apps.get("/admin/reviews", verifyLogin, RoleMiddleware, adminReviews);
 apps.get("/admin/contact", verifyLogin, RoleMiddleware, adminContact);
 
@@ -133,9 +133,32 @@ apps.get("/logout", logout);
 
 // METHODS
 async function home(req, res) {
+  const dataD = await destinationController.getDestination();
+
+  const filterThreeArray = dataD.slice(0, 3);
+
+  function rupiah(num) {
+    return new Intl.NumberFormat("id-ID", {
+      style: "currency",
+      currency: "IDR",
+    })
+      .format(num)
+      .replace("Rp", "Rp ");
+  }
+
+  const filterData = filterThreeArray.map((item) => {
+    return {
+      ...item,
+      Price: rupiah(item.Price),
+      Promo: rupiah(item.Promo),
+      TotalRupiah: rupiah(item.Price - item.Promo),
+    };
+  });
+
   res.render("index", {
     dataServices: await servicesController.getServices(),
     dataGallery: await galleryController.getGallery(),
+    dataDestination: filterData,
   });
 }
 
