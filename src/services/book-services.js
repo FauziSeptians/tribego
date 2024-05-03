@@ -63,7 +63,7 @@ export class BookServices {
     });
 
     if (isDataExists == 0) {
-      throw new ResponseError(404, "Data not found");
+      return [];
     }
 
     const data = await BookedModel.find({
