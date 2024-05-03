@@ -4,7 +4,7 @@ import { ReviewServices } from "../services/review-services.js";
 export class reviewController {
   static async create(req, res, next) {
     try {
-      console.log(req.body);
+      // console.log(req.body);
       await ReviewServices.create(req.body);
 
       return res
@@ -38,7 +38,7 @@ export class reviewController {
 
   static async deleteReview(req, res, next) {
     try {
-      console.log(req.params.id);
+      // console.log(req.params.id);
       await ReviewServices.deleteReview(req.params.id);
       return res
         .status(200)

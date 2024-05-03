@@ -118,15 +118,15 @@
       formData.append('galleryImage', document.getElementById('image').files[0]);
 
 
-      console.log(userData)
-      console.log(Title)
+    // console.log(userData)
+    // console.log(Title)
       await fetch('/api/update/destinations/' + item._id, {
         method: 'PUT',
         body: formData
       })
       .then(response => response.json())
       .then(data => {
-        console.log(data);
+      // console.log(data);
         location.reload();
       })
       .catch(error => {
@@ -174,7 +174,7 @@
     })
     .then(response => response.json())
     .then(data => {
-      console.log(data);
+    // console.log(data);
       location.reload();
     })
     .catch(error => {

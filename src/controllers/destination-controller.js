@@ -9,7 +9,7 @@ export class destinationController {
         throw new ResponseError(400, "Invalid form data type");
       }
 
-      console.log(req);
+      // console.log(req);
 
       const file = req.file;
       const data = req.body.data;
@@ -51,7 +51,7 @@ export class destinationController {
 
       const file = req?.file;
       const data = req.body.data;
-      console.log(file);
+      // console.log(file);
 
       await DestinationServices.update(file?.filename, data, req.params.id);
 
@@ -65,7 +65,7 @@ export class destinationController {
 
   static async deleteDestination(req, res, next) {
     try {
-      console.log(req.params.id);
+      // console.log(req.params.id);
       await DestinationServices.deleteDestination(req.params.id);
       return res
         .status(200)

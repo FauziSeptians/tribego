@@ -27,7 +27,7 @@ export class galleryController {
   static async update(req, res, next) {
     try {
       const file = req.file;
-      console.log(file);
+      // console.log(file);
       await GalleryServices.update(file.filename, req.params.id);
 
       return res

@@ -117,9 +117,9 @@
       formData.append('galleryImage', document.getElementById('image').files[0]);
 
 
-      console.log(userData)
-      console.log(Title)
-      await fetch('/api/create/services/', {
+    // console.log(userData)
+    // console.log(Title)
+      await fetch('/api/create/services', {
         method: 'POST',
         body: formData
       })
@@ -164,8 +164,8 @@
       formData.append('data', JSON.stringify(userData)); 
       formData.append('galleryImage', document.getElementById('image').files[0]);
 
-      console.log(userData)
-      console.log(Title)
+    // console.log(userData)
+    // console.log(Title)
 
       await fetch('/api/update/services/' + item._id, {
         method: 'PUT',
@@ -173,7 +173,7 @@
       })
       .then(response => response.json())
       .then(data => {
-        console.log(data);
+      // console.log(data);
       })
       .catch(error => {
         console.error('Error:', error);
@@ -189,7 +189,7 @@
     })
     .then(response => response.json())
     .then(data => {
-      console.log(data);
+    // console.log(data);
       location.reload();
       setTimeout(() => {
         closeDeleteModal();

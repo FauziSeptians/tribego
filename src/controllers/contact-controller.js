@@ -26,7 +26,7 @@ export class contactController {
 
   static async deleteContact(req, res, next) {
     try {
-      console.log(req.params.id);
+      // console.log(req.params.id);
       await ContactServices.delete(req.params.id);
       return res
         .status(200)

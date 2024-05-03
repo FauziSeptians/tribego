@@ -121,7 +121,7 @@ apps.get("/admin/users", verifyLogin, RoleMiddleware, adminUsers);
 apps.get("/admin/destinations", verifyLogin, RoleMiddleware, adminDestinations);
 apps.get("/admin/services", verifyLogin, RoleMiddleware, adminServices);
 apps.get("/admin/bookings", verifyLogin, RoleMiddleware, adminBooking);
-apps.get("/admin/gallery", verifyLogin, RoleMiddleware, adminGallery);
+// apps.get("/admin/gallery", verifyLogin, RoleMiddleware, adminGallery);
 apps.get("/admin/reviews", verifyLogin, RoleMiddleware, adminReviews);
 apps.get("/admin/contact", verifyLogin, RoleMiddleware, adminContact);
 
@@ -134,18 +134,39 @@ apps.get("/logout", logout);
 // METHODS
 async function home(req, res) {
   try {
-    const services = await servicesController.getServices();
-    const gallery = await galleryController.getGallery();
+    const dataD = await destinationController.getDestination();
+
+    const filterThreeArray = dataD.slice(0, 3);
+
+    function rupiah(num) {
+      return new Intl.NumberFormat("id-ID", {
+        style: "currency",
+        currency: "IDR",
+      })
+        .format(num)
+        .replace("Rp", "Rp ");
+    }
+
+    const filterData = filterThreeArray.map((item) => {
+      return {
+        ...item,
+        Price: rupiah(item.Price),
+        Promo: rupiah(item.Promo),
+        TotalRupiah: rupiah(item.Price - item.Promo),
+      };
+    });
+
     res.render("index", {
-      dataServices: services,
-      dataGallery: gallery,
-      message: undefined,
+      dataServices: await servicesController.getServices(),
+      dataGallery: await galleryController.getGallery(),
+      dataDestination: filterData,
     });
   } catch (error) {
     res.render("index", {
-      message: error.message,
       dataServices: undefined,
       dataGallery: undefined,
+      dataDestination: undefined,
+      message: error.message,
     });
   }
 }
@@ -257,8 +278,10 @@ async function adminBooking(req, res) {
 }
 
 async function adminReviews(req, res) {
+  const data = await reviewController.getReviews();
+  console.log(data);
   res.render(`${routerAdminPage}Reviews/index`, {
-    data: await reviewController.getReviews(),
+    data: data,
   });
 }
 

@@ -29,7 +29,11 @@
                 </td>
                 <td>
                   <div class="isMobile">User ID :</div>
-                  <%= value.userId.name  %>
+                  <% if(value.userId) { %>
+                    <div><%= value.userId.name %></div>
+                    <% } else { %>
+                        <div>-</div>
+                      <% } %>
                 </td>
                 <td>
                   <div class="isMobile">Destination ID :</div>
@@ -153,7 +157,7 @@
     })
     .then(response => response.json())
     .then(data => {
-      console.log(data);
+    // console.log(data);
       location.reload();
     })
     .catch(error => {
