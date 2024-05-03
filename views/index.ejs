@@ -52,7 +52,7 @@
         <form action="" id="book-form">
           <div class="inputBox">
             <h3>where to</h3>
-            <input type="text" id="destinationId"  placeholder="place name" />
+            <input type="text" id="destinationName"  placeholder="place name" />
           </div>
           <div class="inputBox">
             <h3>how many</h3>
@@ -66,9 +66,13 @@
             <h3>leaving</h3>
             <input type="date" id="endBook" />
           </div>
+          
           <input type="submit" class="btn" value="book now" />
+          <div id="messages" style="margin-top: 10px;"></div>
         </form>
+      
       </div>
+     
     </section>
 
     
@@ -163,13 +167,16 @@
     bookForm.addEventListener('submit', async (e) => {
       e.preventDefault();
 
-      const destinationId = document.getElementById('destinationId').value;
+      const destinationName = document.getElementById('destinationName').value;
       const guest = document.getElementById('guest').value;
       const startBook = document.getElementById('startBook').value;
       const endBook = document.getElementById('endBook').value;
       const id = '<%= userId %>'
 
-      const data = { userId: id, destinationId, guest, startBook, endBook }; // Memperbaiki format objek data
+      console.log(id);
+
+      const data = { userId: id, destinationName, guest, startBook, endBook }; // Memperbaiki format objek data
+      console.log(data);
 
       try {
         const response = await fetch('/api/create/book', { // Memperbaiki endpoint
@@ -180,13 +187,26 @@
           body: JSON.stringify(data)
         });
 
-        const responseData = await response.json(); // Menangani respons dari server
-      // console.log(responseData); // Melakukan log respons dari server
+        console.log(response)
+        const responseData = await response.json();
 
-        window.location.href = '/bookings';
+        if(response.status == 200){
+          
+          document.getElementById("messages").innerHTML = "<div>" + "succesfully created data" + "</div>";
+        }else{
+
+          document.getElementById("messages").innerHTML = "<div style=red>" + responseData.errorsMessage + "</div>";
+        }
+
+      
+        console.log(responseData); // Melakukan log respons dari server
+        
+        // window.location.href = '/bookings';
 
       } catch (error) {
         console.error('Error:', error);
+        console.log(error.errorsMessage)
+        document.getElementById("messages").innerHTML = "<div>" + error.errorsMessage + "</div>";
       }
     })
   })

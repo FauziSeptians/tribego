@@ -16,14 +16,17 @@
         <span>E</span>
         <span>S</span>
       </h1>
-      <div class="box-container">
+      <% if(message) { %>
+        <div class="box-container"><%= message%></div>
+      <% } else { %>
+        <div class="box-container">
 
         <% if(data.length > 0)  { %>
           <% data.forEach((item) => {  %>
           <div class="box">
             <img src="uploads/<%= item._doc.Images %>" alt="" />
             <div class="content">
-              <h3><i class="fas fa-map-market-alt"></i><%= JSON.stringify(item.destinationId.name)  %></h3>
+              <h3><i class="fas fa-map-market-alt"></i><%= JSON.stringify(item.destinationName)  %></h3>
               <h3><i class="fas fa-map-market-alt"></i><%= JSON.stringify(item.userId.name)  %></h3>
               <h3><i class="fas fa-map-market-alt"></i><%= JSON.stringify(item.guest)  %></h3>
               <h3><i class="fas fa-map-market-alt"></i><%= JSON.stringify(item.startBook)  %></h3>
@@ -37,6 +40,9 @@
         <% } else { %>
           <h1 class="heading">No Destinations Found</h1>
         <% } %>
+      <% } %>
+
+      
 
       </div>
     </section>

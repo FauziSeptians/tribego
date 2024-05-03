@@ -39,8 +39,8 @@ export class bookController {
     try {
       const data = await BookServices.getBookByIdUser(req.params.id);
       return data;
-    } catch (err) {
-      next(err);
+    } catch (error) {
+      next(error);
     }
   }
 

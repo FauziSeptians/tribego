@@ -44,6 +44,9 @@ export class DestinationServices {
       _id: id,
     });
 
+    console.log("test")
+    console.log(data.length)
+
     return data;
   }
 

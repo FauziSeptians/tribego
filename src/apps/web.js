@@ -133,33 +133,42 @@ apps.get("/logout", logout);
 
 // METHODS
 async function home(req, res) {
-  const dataD = await destinationController.getDestination();
+  try {
+    const dataD = await destinationController.getDestination();
 
-  const filterThreeArray = dataD.slice(0, 3);
+    const filterThreeArray = dataD.slice(0, 3);
 
-  function rupiah(num) {
-    return new Intl.NumberFormat("id-ID", {
-      style: "currency",
-      currency: "IDR",
-    })
-      .format(num)
-      .replace("Rp", "Rp ");
+    function rupiah(num) {
+      return new Intl.NumberFormat("id-ID", {
+        style: "currency",
+        currency: "IDR",
+      })
+        .format(num)
+        .replace("Rp", "Rp ");
+    }
+
+    const filterData = filterThreeArray.map((item) => {
+      return {
+        ...item,
+        Price: rupiah(item.Price),
+        Promo: rupiah(item.Promo),
+        TotalRupiah: rupiah(item.Price - item.Promo),
+      };
+    });
+
+    res.render("index", {
+      dataServices: await servicesController.getServices(),
+      dataGallery: await galleryController.getGallery(),
+      dataDestination: filterData,
+    });
+  } catch (error) {
+    res.render("index", {
+      dataServices: undefined,
+      dataGallery: undefined,
+      dataDestination: undefined,
+      message: error.message,
+    });
   }
-
-  const filterData = filterThreeArray.map((item) => {
-    return {
-      ...item,
-      Price: rupiah(item.Price),
-      Promo: rupiah(item.Promo),
-      TotalRupiah: rupiah(item.Price - item.Promo),
-    };
-  });
-
-  res.render("index", {
-    dataServices: await servicesController.getServices(),
-    dataGallery: await galleryController.getGallery(),
-    dataDestination: filterData,
-  });
 }
 
 async function destinations(req, res) {
@@ -194,17 +203,26 @@ async function destinations(req, res) {
 async function destinationDetail(req, res) {
   const id = req.params.id;
   const data = await DestinationServices.getDestinationById(id);
+
+  console.log(data);
   res.render("users/pages/Destinations/index", {
     data: data,
   });
 }
 
 async function bookings(req, res) {
-  const data = await BookServices.getBookByIdUser(req.session.userId);
-
-  res.render("users/pages/Bookings/index", {
-    data: data,
-  });
+  try {
+    const data = await BookServices.getBookByIdUser(req.session.userId);
+    console.log(data);
+    res.render("users/pages/Bookings/index", {
+      data: data,
+      message: undefined,
+    });
+  } catch (error) {
+    res.render("users/pages/Bookings/index", {
+      message: error.message,
+    });
+  }
 }
 
 async function reviews(req, res) {
@@ -252,14 +270,18 @@ async function adminGallery(req, res) {
 }
 
 async function adminBooking(req, res) {
+  const data = await bookController.getBook();
+  console.log(data);
   res.render(`${routerAdminPage}Bookings/index`, {
-    data: await bookController.getBook(),
+    data: data,
   });
 }
 
 async function adminReviews(req, res) {
+  const data = await reviewController.getReviews();
+  console.log(data);
   res.render(`${routerAdminPage}Reviews/index`, {
-    data: await reviewController.getReviews(),
+    data: data,
   });
 }
 
@@ -270,21 +292,23 @@ async function adminContact(req, res) {
 }
 
 async function login(req, res) {
-  const data = await UserServices.login(req.body);
+  try {
+    const data = await UserServices.login(req.body);
 
-  console.log(data);
+    if (data) {
+      req.session.userId = data._id;
+      req.session.userEmail = data.email;
+      req.session.userName = data.name;
+      req.session.userRole = data.Role;
 
-  if (data) {
-    req.session.userId = data._id;
-    req.session.userEmail = data.email;
-    req.session.userName = data.name;
-    req.session.userRole = data.Role;
-
+      res.redirect("/");
+      return;
+    } else {
+      res.redirect("/login");
+      return;
+    }
+  } catch (error) {
     res.redirect("/");
-    return;
-  } else {
-    res.redirect("/login");
-    return;
   }
 }
 

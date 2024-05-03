@@ -29,11 +29,15 @@
                 </td>
                 <td>
                   <div class="isMobile">User ID :</div>
-                  <%= value.userId.name  %>
+                  <% if(value.userId) { %>
+                    <div><%= value.userId.name %></div>
+                    <% } else { %>
+                        <div>-</div>
+                      <% } %>
                 </td>
                 <td>
                   <div class="isMobile">Destination ID :</div>
-                  <%= value.destinationId.Title %>
+                  <%= value.destinationName %>
                 </td>
                 <td>
                   <div class="isMobile">Start Point :</div>

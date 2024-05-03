@@ -1,20 +1,21 @@
-
 import mongoose from "mongoose";
 
 const bookedSchemas = mongoose.Schema({
   destinationId: {
     type: mongoose.Schema.ObjectId,
     ref: "Destination",
-    require: true,
   },
   userId: {
     type: mongoose.Schema.ObjectId,
     ref: "Users",
     require: true,
   },
+  destinationName: {
+    type: String,
+  },
   guest: {
     type: Number,
-    min : 1,
+    min: 1,
     require: true,
   },
   startBook: {

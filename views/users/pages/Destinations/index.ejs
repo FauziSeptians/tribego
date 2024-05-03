@@ -32,9 +32,24 @@
 
         <% }); %>
 
-        <% } else { %>
+        <% } else if(data.length == 0) { %>
+ 
           <h1 class="heading">No Destinations Found</h1>
-        <% } %>
+        <% }else { %>
+          <div class="box" onclick="location.href='/destination/<%= data._doc._id %>'">
+            <img src="uploads/<%= data._doc.Images %>" alt="" />
+            <div class="content">
+              <h3><i class="fas fa-map-market-alt"></i><%= JSON.stringify(data._doc.Title)  %></h3>
+              <p><%= data._doc.Location %></p>
+              <div class="price"><%=  data.TotalRupiah %></span> <span><%= data.Price  %></span></div>
+              <div style="margin-top: 10px;">
+                <%= data.Description %>
+              </div>
+              <a href="#" class="btn" id="book-form">book now</a>
+            </div>
+          </div>
+          <% } %>
+
 
       </div>
     </section>
@@ -54,7 +69,55 @@
 
     <%- include('../../layouts/footer.ejs') %>
     <script>
-    // console.log('asda')
+      const bookForm = document.getElementById('book-form');
+      console.log("hallo")
+
+bookForm.addEventListener('click', async (e) => {
+  console.log("wor");
+  e.preventDefault();
+
+  const destinationName = document.getElementById('destinationName').value;
+  const guest = document.getElementById('guest').value;
+  const startBook = document.getElementById('startBook').value;
+  const endBook = document.getElementById('endBook').value;
+  const id = '<%= userId %>'
+
+  console.log(id);
+
+  const data = { userId: id, destinationName, guest, startBook, endBook }; // Memperbaiki format objek data
+  console.log(data);
+
+  try {
+    const response = await fetch('/api/create/book', { // Memperbaiki endpoint
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    });
+
+    console.log(response)
+    const responseData = await response.json();
+
+    if(response.status == 200){
+      
+      document.getElementById("messages").innerHTML = "<div>" + "succesfully created data" + "</div>";
+    }else{
+
+      document.getElementById("messages").innerHTML = "<div style=red>" + responseData.errorsMessage + "</div>";
+    }
+
+  
+    console.log(responseData); // Melakukan log respons dari server
+    
+    // window.location.href = '/bookings';
+
+  } catch (error) {
+    console.error('Error:', error);
+    console.log(error.errorsMessage)
+    document.getElementById("messages").innerHTML = "<div>" + error.errorsMessage + "</div>";
+  }
+})
     </script>
   </body>
 

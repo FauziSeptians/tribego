@@ -62,6 +62,7 @@
               required
             ></textarea>
             <button type="submit" class="btn">Send Message</button>
+            <div id="messageError" class="mt-3"></div>
           </form>
         </div>
       </div>
@@ -97,6 +98,7 @@
         const message = document.getElementById("message").value;
 
         const userData = { Name: name, Email: email, PhoneNumber: phone, Subject: subject, Message: message };
+        console.log(userData);
 
         try {
           const response = await fetch('/api/contact', {
@@ -107,7 +109,15 @@
             body: JSON.stringify(userData)
           });
 
-          location.reload();
+          // location.reload();
+         
+          console.log("test")
+          if(response.status == 500){
+            document.getElementById("messageError").innerHTML = "<div>Something went wrong</div>"
+          }else{
+            document.getElementById("messageError").innerHTML = "<div>Successfuly send the form</div>"
+          }
+          console.log(response);
         } catch (error) {
           console.error('Error:', error);
         }
