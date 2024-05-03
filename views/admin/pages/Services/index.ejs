@@ -25,20 +25,20 @@
             <% data.forEach(value => { %>
               <tr>
                 <td>
-                  <%= value.id  %>
+                  <%= value._id  %>
                 </td>
                 <td>
-                  <%= value.title  %>
+                  <%= value.Title  %>
                 </td>
                 <td>
-                  <%= value.description  %>
+                  <%= value.Description  %>
                 </td>
                 <td class="text-center action">
                   <div class="flex gap-1">
                     <div class="btn-edit" onclick="openEditModal('<%= JSON.stringify(value) %>')">
                       <div >Edit</div>
                     </div>
-                    <div class="btn-delete" onclick="openDeleteModal('<%= value.id %>')">
+                    <div class="btn-delete" onclick="openDeleteModal('<%= value._id %>')">
                         <div>Delete</div>
                     </div>
                   </div>
@@ -103,6 +103,35 @@
     document.getElementById("createForm").action = "/service/create/";
     document.getElementById("createTitle").value = "";
     document.getElementById("createDescription").value = "";
+
+    const createForm = document.getElementById("createForm");
+
+    createForm.addEventListener('submit', async (event) => { 
+      const Title = document.getElementById('createTitle').value; 
+      const Description = document.getElementById('createDescription').value; 
+
+      event.preventDefault() 
+      const userData = { Title: Title,  Description: Description,  }; 
+      const formData = new FormData();
+      formData.append('data', JSON.stringify(userData)); 
+      formData.append('galleryImage', document.getElementById('image').files[0]);
+
+
+      console.log(userData)
+      console.log(Title)
+      await fetch('/api/create/services/', {
+        method: 'POST',
+        body: formData
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+    });
+
   }
 
   function closeCreateModal() {
@@ -116,12 +145,40 @@
 
     const item = JSON.parse(data);
 
-    console.log(data)
-    console.log(item.description)
+  
 
-    document.getElementById("createForm").action = "/service/update/" + item.id + '?_method=PATCH';
-    document.getElementById("createTitle").value = item.title
-    document.getElementById("createDescription").value = item.description
+    document.getElementById("createForm").action = "/service/update/" + item._id + '?_method=PATCH';
+    document.getElementById("createTitle").value = item.Title
+    document.getElementById("createDescription").value = item.Description
+
+    const createForm = document.getElementById("createForm");
+
+    createForm.addEventListener('submit', async (event) => { 
+      const Title = document.getElementById('createTitle').value; 
+      const Description = document.getElementById('createDescription').value; 
+
+      event.preventDefault() 
+      const userData = { Title: Title,  Description: Description  }; 
+      const formData = new FormData();
+      formData.append('data', JSON.stringify(userData)); 
+      formData.append('galleryImage', document.getElementById('image').files[0]);
+
+      console.log(userData)
+      console.log(Title)
+
+      await fetch('/api/update/services/' + item._id, {
+        method: 'PUT',
+        body: formData
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+    });
+
   }
 
   
@@ -139,8 +196,19 @@
     deleteModal.style.display = "none";
   }
 
-  function confirmDelete() {
-    window.location.href = "/service/delete/" + idForDelete;
+  async function confirmDelete() {
+    await fetch('/api/services/' + idForDelete, {
+      method: 'DELETE',
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log(data);
+      location.reload();
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
+
 
     closeDeleteModal();
   }

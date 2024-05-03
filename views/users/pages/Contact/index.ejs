@@ -5,7 +5,7 @@
     
     <%- include('../../layouts/navigation.ejs') %>
 
-    <section class="contact min-h-full">
+    <section class="contact  min-h-full">
       <h1 class="heading">
         <span>C</span>
         <span>O</span>
@@ -15,13 +15,13 @@
         <span>C</span>
         <span>T</span>
       </h1>
-      <div class="row">
+      <div class="row ">
         <div class="image">
           <img src="assets/contact-img.jpg" alt="Contact Image" />
         </div>
         <div class="form-container">
           <h2>Contact Us</h2>
-          <form action="">
+          <form action="" id="contactForm">
             <div class="input-group">
               <input
                 type="text"
@@ -82,4 +82,37 @@
 
     <%- include('../../layouts/footer.ejs') %>
   </body>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const loginForm = document.getElementById("contactForm");
+
+      loginForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        const name = document.getElementById("name").value;
+        const email = document.getElementById("email").value;
+        const phone = document.getElementById("phone").value;
+        const subject = document.getElementById("subject").value;
+        const message = document.getElementById("message").value;
+
+        const userData = { Name: name, Email: email, PhoneNumber: phone, Subject: subject, Message: message };
+
+        try {
+          const response = await fetch('/api/contact', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(userData)
+          });
+
+          location.reload();
+        } catch (error) {
+          console.error('Error:', error);
+        }
+      });
+    });
+  </script>
 </html>
+

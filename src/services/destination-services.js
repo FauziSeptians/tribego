@@ -39,6 +39,17 @@ export class DestinationServices {
     return data;
   }
 
+  static async getDestinationById(id) {
+    const data = await DestinationModel.findOne({
+      _id: id,
+    });
+
+    console.log("test")
+    console.log(data.length)
+
+    return data;
+  }
+
   static async update(images, data, id) {
     console.log(images);
     const newData = JSON.parse(data);

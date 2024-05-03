@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include('../../layouts/header.ejs') %>
+  <body>
+
+    <%- include('../../layouts/navigation.ejs') %>
+
+    <section class="packages min-h-full" id="packages">
+      <h1 class="heading">
+        <span>P</span>
+        <span>A</span>
+        <span>C</span>
+        <span>K</span>
+        <span>A</span>
+        <span>G</span>
+        <span>E</span>
+        <span>S</span>
+      </h1>
+      <% if(message) { %>
+        <div class="box-container"><%= message%></div>
+      <% } else { %>
+        <div class="box-container">
+
+        <% if(data.length > 0)  { %>
+          <% data.forEach((item) => {  %>
+          <div class="box">
+            <img src="uploads/<%= item._doc.Images %>" alt="" />
+            <div class="content">
+              <h3><i class="fas fa-map-market-alt"></i><%= JSON.stringify(item.destinationName)  %></h3>
+              <h3><i class="fas fa-map-market-alt"></i><%= JSON.stringify(item.userId.name)  %></h3>
+              <h3><i class="fas fa-map-market-alt"></i><%= JSON.stringify(item.guest)  %></h3>
+              <h3><i class="fas fa-map-market-alt"></i><%= JSON.stringify(item.startBook)  %></h3>
+              <h3><i class="fas fa-map-market-alt"></i><%= JSON.stringify(item.endBook)  %></h3>
+
+            </div>
+          </div>
+
+        <% }); %>
+
+        <% } else { %>
+          <h1 class="heading">No Destinations Found</h1>
+        <% } %>
+      <% } %>
+
+      
+
+      </div>
+    </section>
+
+    <section class="brand-container">
+      <div class="swiper-container brand-slider">
+        <div class="swiper-wrapper">
+          <div class="swiper-slide"><img src="images/1.jpg" alt="" /></div>
+          <div class="swiper-slide"><img src="images/2.jpg" alt="" /></div>
+          <div class="swiper-slide"><img src="images/3.jpg" alt="" /></div>
+          <div class="swiper-slide"><img src="images/4.jpg" alt="" /></div>
+          <div class="swiper-slide"><img src="images/5.jpg" alt="" /></div>
+          <div class="swiper-slide"><img src="images/6.jpg" alt="" /></div>
+        </div>
+      </div>
+    </section>
+
+    <%- include('../../layouts/footer.ejs') %>
+    <script>
+      console.log('asda')
+    </script>
+  </body>
+</html>
+

@@ -9,6 +9,8 @@ export class destinationController {
         throw new ResponseError(400, "Invalid form data type");
       }
 
+      console.log(req);
+
       const file = req.file;
       const data = req.body.data;
 
@@ -25,8 +27,18 @@ export class destinationController {
   static async getDestination(req, res, next) {
     try {
       const data = await DestinationServices.getDestination();
-      return res.status(200).send(new ResponseModel(data, "OK"));
-    } catch (error) {
+      return data;
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  static async getDestinationById(req, res, next) {
+    try {
+      const id = req.params.id;
+      const data = await DestinationServices.getDestinationById(id);
+      return data;
+    } catch (err) {
       next(err);
     }
   }

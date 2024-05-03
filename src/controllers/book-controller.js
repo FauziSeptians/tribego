@@ -17,7 +17,7 @@ export class bookController {
   static async getBook(req, res, next) {
     try {
       const data = await BookServices.getBook();
-      return res.status(200).send(new ResponseModel(data, "OK"));
+      return data;
     } catch (err) {
       next(err);
     }
@@ -30,6 +30,15 @@ export class bookController {
       return res
         .status(200)
         .send(new ResponseModel({}, "Successfully updated data user"));
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async getBookByIdUser(req, res, next) {
+    try {
+      const data = await BookServices.getBookByIdUser(req.params.id);
+      return data;
     } catch (error) {
       next(error);
     }

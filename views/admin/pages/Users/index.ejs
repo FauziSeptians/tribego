@@ -10,9 +10,6 @@
           <div>
             <h1>USERS</h1>
           </div>
-          <div class="btn-create" onclick="openCreateModal()">
-            Create
-          </div>
         </div>
         <table class="rwd-table ">
           <tbody>
@@ -78,9 +75,7 @@
         <p>Are you sure you want to delete this user?</p>
         <div class="flex gap-1">
           <div>
-            <form id="deleteForm" action="/user/0" method="post">
-              <button type="submit" class="px-4 py-2 text-center rounded-lg bg-red-600 hover:bg-red-400 text-white w-full h-full">Yes</button>
-            </form>
+            <button onclick="confirmDelete()" class="px-4 py-2 text-center rounded-lg bg-red-600 hover:bg-red-400 text-white w-full h-full">Yes</button>
           </div>
           <div>
             <button onclick="closeDeleteModal()">No</button>
@@ -107,6 +102,38 @@
     document.getElementById("createDescription").value = "";
     document.getElementById("createPrice").value = "";
     document.getElementById("createPromo").value = "";
+
+
+    createForm.addEventListener('submit', async (event) => { 
+      const Title = document.getElementById('Title').value; 
+      const Description = document.getElementById('createDescription').value; 
+      const Location = document.getElementById('createLocation').value;
+      const Price = document.getElementById('createPrice').value;
+      const Promo = document.getElementById('createPromo').value;
+
+      event.preventDefault() 
+      const userData = { Title: Title,  Price: Price,  Description: Description,  Location: Location,  Promo: Promo }; 
+      const formData = new FormData();
+      formData.append('data', JSON.stringify(userData)); 
+      formData.append('galleryImage', document.getElementById('image').files[0]);
+
+
+      console.log(userData)
+      console.log(Title)
+      await fetch('/api/update/destinations/' + item._id, {
+        method: 'PUT',
+        body: formData
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+        location.reload();
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+    }); 
+    
   }
 
   function closeCreateModal() {
@@ -131,7 +158,7 @@
     var deleteModal = document.getElementById("deleteModal");
     deleteModal.style.display = "flex";
 
-    document.getElementById("deleteForm").action = "/user/delete/" + id + "?_method=DELETE";
+    idForDelete = id;
   }
 
 
@@ -140,9 +167,19 @@
     deleteModal.style.display = "none";
   }
 
-  function confirmDelete() {
-    window.location.href = "/user/delete/" + idForDelete;
+  async function confirmDelete() {
 
+    await fetch('/api/users/' + idForDelete, {
+      method: 'DELETE',
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log(data);
+      location.reload();
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
     closeDeleteModal();
   }
 

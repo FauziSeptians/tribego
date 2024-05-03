@@ -1,27 +1,21 @@
-import { render } from "ejs";
 import jwt from "jsonwebtoken";
+import { UserServices } from "../services/user-services.js";
 
 export const jwtSecret = "your_very_secret_key";
 
-export const verifyJWT = (req, res, next) => {
-  const authHeader = req.headers.authorization;
-
-  if (!authHeader || !authHeader.startsWith("Bearer ")) {
-    return res.status(401).json({ message: "Unauthorized" });
-  }
-
-  const token = authHeader.split(" ")[1];
-
+export const verifyLogin = async (req, res, next) => {
   try {
-    const decoded = jwt.verify(token, jwtSecret);
-    req.user = decoded; // Attach decoded user data to the request object
+    if (!req.session.userId) {
+      return res.redirect("/");
+    }
+
     next();
   } catch (error) {
     if (error.name === "JsonWebTokenError") {
-      return res.status(403).json({ message: "Invalid Token" }); // Invalid token format or signature
+      return res.status(403).json({ message: "Invalid Token" });
     } else {
       console.error(error);
-      return res.status(500).json({ message: "Internal Server Error" }); // Other errors
+      return res.status(500).json({ message: "Internal Server Error" });
     }
   }
 };

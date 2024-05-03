@@ -46,6 +46,8 @@ export class UserServices {
   static async login(requestBody) {
     const { Email, Password } = requestBody;
 
+    console.log(requestBody);
+
     if (!Email || !Password) {
       throw new ResponseError(400, "Data must be filled");
     }
@@ -54,8 +56,13 @@ export class UserServices {
       email: Email,
     });
 
-    if (!isEmailExists) {
-      throw new ResponseError(404, "Data not found");
+    const isDataExists = await UserModel.findOne({
+      email: Email,
+    }).countDocuments();
+
+    if (isDataExists == 0) {
+      console.log("test");
+      throw new ResponseError(404, "Data email not found");
     }
 
     const isPasswordCorrect = CompareHashPassword(
@@ -78,7 +85,7 @@ export class UserServices {
 
     const data = await UserModel.findOne({
       email: Email,
-    }).select("name email token");
+    }).select("name email token Role");
 
     return data;
   }
@@ -87,6 +94,26 @@ export class UserServices {
     const dataUsers = await UserModel.find({});
 
     return dataUsers;
+  }
+
+  static async getUser(id) {
+    if (!id) {
+      throw new ResponseError(404, "Please insert id first");
+    }
+
+    const isDataExists = await UserModel.find({
+      _id: id,
+    }).countDocuments();
+
+    if (isDataExists == 0) {
+      throw new ResponseError(404, "Data not found");
+    }
+
+    const data = await UserModel.findOne({
+      _id: id,
+    }).select("name email");
+
+    return data;
   }
 
   static async update(requestBody, id) {

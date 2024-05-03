@@ -10,9 +10,6 @@
           <div>
             <h1>REVIEWS</h1>
           </div>
-          <div class="btn-create" onclick="openCreateModal()">
-            Create
-          </div>
         </div>
         <table class="rwd-table ">
           <tbody>
@@ -28,30 +25,30 @@
               <tr>
                 <td>
                   <div class="isMobile">ID :</div>
-                  <%= value.id  %>
+                  <%= value._id  %>
                 </td>
                 <td>
                   <div class="isMobile">User ID :</div>
-                  <%= value.user?.id  %>
+                  <%= value.userId.name  %>
                 </td>
                 <td>
                   <div class="isMobile">Destination ID :</div>
-                  <%= value.destination?.id  %>
+                  <%= value.destinationId.Title %>
                 </td>
                 <td>
                   <div class="isMobile">Start Point :</div>
-                  <%= value.startPoint  %>
+                  <%= value.starReview  %>
                 </td>
                 <td>
                   <div class="isMobile">Description :</div>
-                  <%= value.description  %>
+                  <%= value.Description  %>
                 </td>
                 <td class="text-center action">
                   <div class="flex gap-1">
-                    <div class="btn-edit"  onclick="openEditModal('<%= JSON.stringify(value) %>')">
-                      <div>Edit</div>
+                    <div class="btn-view"  onclick="openViewModal('<%= JSON.stringify(value) %>')">
+                      <div>View</div>
                     </div>
-                    <div class="btn-delete" onclick="openDeleteModal('<%= value.id %>')">
+                    <div class="btn-delete" onclick="openDeleteModal('<%= value._id  %>')">
                         <div >Delete</div>
                     </div>
                   </div>
@@ -64,35 +61,29 @@
 
     <div id="createModal" class="modal">
       <div class="modal-content">
-        <span class="close" onclick="closeCreateModal()">&times;</span>
-          <form id="createForm" method="post" action="/review/create" enctype="multipart/form-data">
+        <span class="close" onclick="closeViewModal()">&times;</span>
+          <div>
             <div>
-              <label for="createTitle">Title</label>
-              <input type="text" placeholder="Title" id="createTitle" name="createTitle">
+              <h1 for="viewId">Id</h1>
+              <p id="viewId"></p>
             </div>
             <div>
-              <label for="createLocation">Location</label>
-              <input type="text" placeholder="Location" id="createLocation" name="createLocation">
+              <h1 for="viewName">User</h1>
+              <p id="viewName"></p>
             </div>
             <div>
-              <label for="createDescription">Description</label>
-              <input type="text" placeholder="Description" id="createDescription" name="createDescription">
+              <h1 for="viewDestination">Destination</h1>
+              <p id="viewDestination"></p>
             </div>
             <div>
-              <label for="createPrice">Price</label>
-              <input type="text" placeholder="Price" id="createPrice" name="createPrice">
+              <h1 for="viewStar">Star</h1>
+              <p id="viewStar"></p>
             </div>
             <div>
-              <label for="createPromo">Promo</label>
-              <input type="text" placeholder="Promo" id="createPromo" name="createPromo">
+              <h1 for="viewDescription">Description</h1>
+              <p id="viewDescription"></p>
             </div>
-            <div>
-              <label for="image">Image</label>
-              <input type="file" id="image" name="image">
-            </div>
-            <button type="submit">Submit</button>
-          </form>
-
+          </div>
       </div>
     </div>
 
@@ -102,9 +93,7 @@
         <p>Are you sure you want to delete this review?</p>
         <div class="flex gap-1">
           <div>
-            <form id="deleteForm" action="/review/0" method="post">
-              <button type="submit" class="px-4 py-2 text-center rounded-lg bg-red-600 hover:bg-red-400 text-white w-full h-full">Yes</button>
-            </form>
+            <button onclick="confirmDelete()" class="px-4 py-2 text-center rounded-lg bg-red-600 hover:bg-red-400 text-white w-full h-full">Yes</button>
           </div>
           <div>
             <button onclick="closeDeleteModal()">No</button>
@@ -121,35 +110,25 @@
 <script>
   let idForDelete = null; 
 
-  function openCreateModal() {
-    var createModal = document.getElementById("createModal");
-    createModal.style.display = "flex";
 
-    document.getElementById("createForm").action = "/review/create/";
-    document.getElementById("createTitle").value = "";
-    document.getElementById("createLocation").value = "";
-    document.getElementById("createDescription").value = "";
-    document.getElementById("createPrice").value = "";
-    document.getElementById("createPromo").value = "";
-  }
+  console.log('<%= JSON.stringify(data)  %>')
 
-  function closeCreateModal() {
+  function closeViewModal() {
     var createModal = document.getElementById("createModal");
     createModal.style.display = "none";
   }
 
-  function openEditModal(data) {
+  function openViewModal(data) {
     var editModal = document.getElementById("createModal");
     editModal.style.display = "flex";
 
     const item = JSON.parse(data);
 
-    document.getElementById("createForm").action = "/review/update/" + item.id + '?_method=PATCH';
-    document.getElementById("createTitle").value = item.title
-    document.getElementById("createLocation").value = item.location
-    document.getElementById("createDescription").value = item.description
-    document.getElementById("createPrice").value = item.price
-    document.getElementById("createPromo").value = item.promo
+    document.getElementById("viewId").innerText = item._id
+    document.getElementById("viewName").innerText = item.userId.name
+    document.getElementById("viewDestination").innerText = item.destinationId.Title
+    document.getElementById("viewStar").innerText = item.starReview
+    document.getElementById("viewDescription").innerText = item.Description
   }
 
   
@@ -158,7 +137,8 @@
     var deleteModal = document.getElementById("deleteModal");
     deleteModal.style.display = "flex";
 
-    document.getElementById("deleteForm").action = "/review/delete/" + id + "?_method=DELETE";
+    idForDelete = id;
+    console.log(idForDelete);
   }
 
 
@@ -168,7 +148,17 @@
   }
 
   function confirmDelete() {
-    window.location.href = "/review/delete/" + idForDelete;
+    fetch('/api/review/' + idForDelete, {
+      method: 'DELETE',
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log(data);
+      location.reload();
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
 
     closeDeleteModal();
   }

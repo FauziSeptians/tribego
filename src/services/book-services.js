@@ -7,9 +7,21 @@ import { UserModel } from "../model/users-model.js";
 
 export class BookServices {
   static async create(requestBody) {
-    const { userId, destinationId, guest, startBook, endBook } = requestBody;
     console.log(requestBody);
-    if (!userId || !destinationId || !guest || !startBook || !endBook) {
+    const {
+      userId,
+      destinationId,
+      guest,
+      startBook,
+      endBook,
+      destinationName,
+    } = requestBody;
+
+    if(!userId){
+      throw new ResponseError(400, "you must login first");
+    }
+
+    if (!guest || !startBook || !endBook) {
       throw new ResponseError(400, "Data must be filled");
     }
 
@@ -18,15 +30,16 @@ export class BookServices {
     }).countDocuments();
 
     if (isDataExists == 0) {
-      throw new ResponseError(400, "UserId not found");
+      x;
+      throw new ResponseError(400, "data not found");
     }
 
-    const isDestinationExists = await DestinationModel.find({
-      _id: destinationId,
+    const isDestinationNameExists = await DestinationModel.find({
+      Title: destinationName,
     }).countDocuments();
 
-    if (isDestinationExists == 0) {
-      throw new ResponseError(400, "DestinationId not found");
+    if (isDestinationNameExists == 0) {
+      throw new ResponseError(400, "Destination Name not found");
     }
 
     if (new Date(startBook) > new Date(endBook)) {
@@ -35,7 +48,7 @@ export class BookServices {
 
     await BookedModel.create({
       userId: userId,
-      destinationId: destinationId,
+      destinationName: destinationName,
       guest: guest,
       startBook: startBook,
       endBook: endBook,
@@ -49,6 +62,26 @@ export class BookServices {
       .populate("userId", "name -_id")
       .populate("destinationId", "Title -_id")
       .lean();
+
+    return data;
+  }
+
+  static async getBookByIdUser(id) {
+    if (!id) {
+      throw new ResponseError(400, "Please insert id first");
+    }
+
+    const isDataExists = await BookedModel.find({
+      userId: id,
+    }).countDocuments();
+
+    if (isDataExists == 0) {
+      throw new ResponseError(404, "Data not found");
+    }
+
+    const data = await BookedModel.find({
+      userId: id,
+    }).populate("userId","name -_id")
 
     return data;
   }
@@ -90,7 +123,6 @@ export class BookServices {
     if (new Date(startBook) > new Date(endBook)) {
       throw new ResponseError(400, "Start booked not allowed after end booked");
     }
-
 
     await BookedModel.findOneAndUpdate(
       {
