@@ -1,14 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
-  <%- include('../../layouts/header.ejs') %>
+<%- include('../../layouts/header.ejs') %>
+
   <body>
 
     <%- include('../../layouts/navigation.ejs') %>
 
-    <div class="admin-destination min-h-full mx-10 table-text">
+      <div class="admin-destination min-h-full mx-10 table-text">
         <div class="flex-between">
           <div>
-            <h1>DESTINATIONS</h1>
+            <h1>BOOKINGS</h1>
           </div>
           <div class="btn-create" onclick="openCreateModal()">
             Create
@@ -25,18 +26,20 @@
               <th>End Book</th>
               <th class="text-center">Action</th>
             </tr>
-            <% data.forEach((value) => { %>
+            <% data.forEach((value)=> { %>
               <tr>
                 <td>
                   <div class="isMobile">ID :</div>
-                  <%= value._id  %>
+                  <%= value._id %>
                 </td>
                 <td>
                   <div class="isMobile">User ID :</div>
-                   <% if(value.userId){ %>
-                    <div><%= value.userId.name  %></div>
+                  <% if(value.userId){ %>
+                    <div>
+                      <%= value.userId.name %>
+                    </div>
                     <% }else { %>
-                    
+
                       <div>-</div>
                       <% } %>
                 </td>
@@ -46,38 +49,70 @@
                 </td>
                 <td>
                   <div class="isMobile">guest :</div>
-                  <%= value.guest  %>
+                  <%= value.guest %>
                 </td>
                 <td>
                   <div class="isMobile">Start Book :</div>
-                  <%= value.startBook  %>
+                  <%= value.startBook %>
                 </td>
                 <td>
                   <div class="isMobile">End Book :</div>
-                  <%= value.endBook  %>
+                  <%= value.endBook %>
                 </td>
                 <td class="text-center action">
                   <div class="flex gap-1">
-                    <div class="btn-view" onclick="openEditModal('<%= JSON.stringify(value) %>')">
+                    <div class="btn-view" onclick="openViewModal('<%= JSON.stringify(value) %>')">
                       <div>View</div>
                     </div>
                     <div class="btn-edit" onclick="openEditModal('<%= JSON.stringify(value) %>')">
                       <div>Edit</div>
                     </div>
                     <div class="btn-delete" onclick="openDeleteModal('<%= value._id %>')">
-                        <div>Delete</div>
+                      <div>Delete</div>
                     </div>
                   </div>
                 </td>
               </tr>
-            <% }) %>
+              <% }) %>
           </tbody>
         </table>
-    </div>
+      </div>
 
-    <div id="createModal" class="modal">
-      <div class="modal-content">
-        <span class="close" onclick="closeCreateModal()">&times;</span>
+      <div id="viewModal" class="modal">
+        <div class="modal-content">
+          <span class="close" onclick="closeViewModal()">&times;</span>
+          <div>
+            <div>
+              <h1 for="viewId">Id</h1>
+              <p id="viewId"></p>
+            </div>
+            <div>
+              <h1 for="viewUserId">User Id</h1>
+              <p id="viewUserId"></p>
+            </div>
+            <div>
+              <h1 for="viewDestinationId">Destination Id</h1>
+              <p id="viewDestinationId"></p>
+            </div>
+            <div>
+              <h1 for="viewGuest">guest</h1>
+              <p id="viewGuest"></p>
+            </div>
+            <div>
+              <h1 for="viewStartBook">startBook</h1>
+              <p id="viewStartBook"></p>
+            </div>
+            <div>
+              <h1 for="viewEndBook">endBook</h1>
+              <p id="viewEndBook"></p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="createModal" class="modal">
+        <div class="modal-content">
+          <span class="close" onclick="closeCreateModal()">&times;</span>
           <form id="createForm" method="post" action="/destination/create" enctype="multipart/form-data">
             <div>
               <label for="userId">userId</label>
@@ -91,47 +126,71 @@
               <label for="guest">guest</label>
               <input type="text" placeholder="guest" id="guest" name="guest">
             </div>
-            <div>
-              <label for="startBook">startBook</label>
-              <input type="text" placeholder="startBook" id="startBook" name="startBook">
+            <div class="inputBox">
+              <h3>arrivals</h3>
+              <input type="date" id="startBook" />
             </div>
-            <div>
-              <label for="endBook">endBook</label>
-              <input type="text" placeholder="endBook" id="endBook" name="endBook">
+            <div class="inputBox">
+              <h3>leaving</h3>
+              <input type="date" id="endBook" />
             </div>
             <button type="submit">Submit</button>
           </form>
 
+        </div>
       </div>
-    </div>
 
-    <div id="deleteModal" class="modal">
-      <div class="modal-content">
-        <span class="close" onclick="closeDeleteModal()">&times;</span>
-        <p>Are you sure you want to delete this destination?</p>
-        <div class="flex gap-1">
-          <div>
-            <button onclick="confirmDelete()" class="px-4 py-2 text-center rounded-lg bg-red-600 hover:bg-red-400 text-white w-full h-full">Yes</button>
-          </div>
-          <div>
-            <button onclick="closeDeleteModal()">No</button>
+      <div id="deleteModal" class="modal">
+        <div class="modal-content">
+          <span class="close" onclick="closeDeleteModal()">&times;</span>
+          <p>Are you sure you want to delete this destination?</p>
+          <div class="flex gap-1">
+            <div>
+              <button onclick="confirmDelete()"
+                class="px-4 py-2 text-center rounded-lg bg-red-600 hover:bg-red-400 text-white w-full h-full">Yes</button>
+            </div>
+            <div>
+              <button onclick="closeDeleteModal()">No</button>
+            </div>
           </div>
         </div>
       </div>
-    </div>
 
 
-    <%- include('../../layouts/footer.ejs') %>
+      <%- include('../../layouts/footer.ejs') %>
   </body>
+
 </html>
 
 <script>
-  let idForDelete = null; 
-  
+  let idForDelete = null;
+
 
   function closeCreateModal() {
     var createModal = document.getElementById("createModal");
     createModal.style.display = "none";
+  }
+
+  function openViewModal(data) {
+    var viewModal = document.getElementById("viewModal");
+    viewModal.style.display = "flex";
+
+    const item = JSON.parse(data);
+
+    console.log(item);
+
+
+    document.getElementById("viewId").innerHTML = item._id;
+    document.getElementById("viewUserId").innerHTML = item.userId;
+    document.getElementById("viewDestinationId").innerHTML = item.destinationName;
+    document.getElementById("viewGuest").innerHTML = item.guest;
+    document.getElementById("viewStartBook").innerHTML = item.startBook;
+    document.getElementById("viewEndBook").innerHTML = item.endBook;
+  }
+
+  function closeViewModal() {
+    var viewModal = document.getElementById("viewModal");
+    viewModal.style.display = "none";
   }
 
   function openEditModal(data) {
@@ -140,44 +199,50 @@
 
     const item = JSON.parse(data);
 
+    console.log(item);
+
     document.getElementById("createForm").action = "/destination/update/" + item.Td + '?_method=PATCH';
 
-    document.getElementById("userId").value = item.userId.name;
-    document.getElementById("DestinationId").value = item.destinationId.Title;
+    document.getElementById("userId").value = item.userId._id;
+    document.getElementById("DestinationId").value = item.destinationName;
     document.getElementById("guest").value = item.guest;
     document.getElementById("startBook").value = item.startBook;
-    document.getElementById("endBook").value = item.endBook;    
-    
+    document.getElementById("endBook").value = item.endBook;
 
-    createForm.addEventListener('submit', async (event) => { 
-      const userId = document.getElementById('userId').value; 
-      const DestinationId = document.getElementById('DestinationId').value; 
-      const guest = document.getElementById('guest').value; 
+
+    createForm.addEventListener('submit', async (event) => {
+      const userId = document.getElementById('userId').value;
+      const DestinationName = document.getElementById('DestinationId').value;
+      const guest = document.getElementById('guest').value;
       const startBook = document.getElementById('startBook').value;
       const endBook = document.getElementById('endBook').value;
-      event.preventDefault() 
-      const userData = { userId: userId,  DestinationId: DestinationId,  guest: guest,  startBook: startBook,  endBook: endBook }; 
+      event.preventDefault()
 
-    // console.log(userData)
-    // console.log(Title)
+
+
+      // console.log(Title)
       await fetch('/api/update/book/' + item._id, {
         method: 'PUT',
-        body: userData
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ userId: userId, destinationName: DestinationName, guest: guest, startBook: startBook, endBook: endBook })
       })
-      .then(response => response.json())
-      .then(data => {
-      // console.log(data);
-        location.reload();
-      })
-      .catch(error => {
-        console.error('Error:', error);
-      });
-    }); 
-    
-    
+        .then(response => response.json())
+        .then(data => {
+          console.log("hallu")
+          console.log(data);
+          location.reload();
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
+    });
+
+
   }
 
-  
+
 
   function openDeleteModal(id) {
     var deleteModal = document.getElementById("deleteModal");
@@ -200,14 +265,14 @@
     await fetch('/api/book/' + idForDelete, {
       method: 'DELETE',
     })
-    .then(response => response.json())
-    .then(data => {
-    // console.log(data);
-      location.reload();
-    })
-    .catch(error => {
-      console.error('Error:', error);
-    });
+      .then(response => response.json())
+      .then(data => {
+        // console.log(data);
+        location.reload();
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
 
     closeDeleteModal();
   }
@@ -215,51 +280,43 @@
 </script>
 
 <style>
-.modal {
-  display: none;
-  justify-content: center;
-  align-items: center;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 99999; 
-}
+  .modal {
+    display: none;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 99999;
+  }
 
 
-.modal-content {
-  background: white;
-  padding: 30px;
-  position: relative;
-  margin: auto; 
-}
+  .modal-content {
+    background: white;
+    padding: 30px;
+    position: relative;
+    margin: auto;
+  }
 
 
-.close {
-  position: absolute;
-  top: 0;
-  right: 0;
-  margin: 10px;
-  background-color: red;
-  width: 20px;
-  height: 20px;
-  font-size: 20px;
-  display: flex; 
-  align-items: center;
-  justify-content: center;
-  color: white;
-  font-weight: 800;
-  cursor: pointer; 
-  border-radius: 100%;
-}
-
-
-
+  .close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 10px;
+    background-color: red;
+    width: 20px;
+    height: 20px;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 800;
+    cursor: pointer;
+    border-radius: 100%;
+  }
 </style>
-
-
-
-
-

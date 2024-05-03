@@ -6,9 +6,8 @@ const reviewSchemas = mongoose.Schema({
     ref: "Users",
     required: true,
   },
-  destinationId: {
-    type: mongoose.Schema.ObjectId,
-    ref: "Destination",
+  destinationName: {
+    type: String,
     required: true,
   },
   starReview: {
@@ -20,4 +19,4 @@ const reviewSchemas = mongoose.Schema({
   },
 });
 
-export const ReviewModel = mongoose.model("Review", reviewSchemas)
+export const ReviewModel = mongoose.model("Review", reviewSchemas);

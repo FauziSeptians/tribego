@@ -213,27 +213,34 @@ async function destinationDetail(req, res) {
 async function bookings(req, res) {
   try {
     const data = await BookServices.getBookByIdUser(req.session.userId);
+
     console.log(data);
-    let Images = []
+    let Images = [];
     data.data.map((item, idx) => {
       data.Destination.map((items) => {
-        console.log(items.Title == item.destinationName)
-        if(items.Title == item.destinationName){
-          data.data[idx].Images= items.Images
-          Images.push(items.Images)
+        console.log(items.Title == item.destinationName);
+        if (items.Title == item.destinationName) {
+          data.data[idx].Images = items.Images;
+          Images.push(items.Images);
         }
         return;
-      })
+      });
       return;
-    })
+    });
 
-    console.log(data.data)
-    console.log(Images)
-    
+    console.log(data.data);
+    console.log(Images);
+
+    console.log("test99");
+    console.log(data.data);
+    console.log(data);
+    console.log(data.length);
+
     res.render("users/pages/Bookings/index", {
-      data: data.data,
-      Images : Images,
+      data: data.length == 0 ? [] : data.data,
+      Images: Images,
       message: undefined,
+      error: false,
     });
   } catch (error) {
     res.render("users/pages/Bookings/index", {

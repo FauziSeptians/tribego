@@ -7,9 +7,10 @@ import { UserModel } from "../model/users-model.js";
 
 export class ReviewServices {
   static async create(requestBody) {
-    const { userId, destinationId, starReview, Description } = requestBody;
+    const { userId, destinationName, starReview, Description } = requestBody;
     console.log(requestBody);
-    if (!userId || !destinationId || !starReview || !Description) {
+    console.log("hallo")
+    if (!userId || !destinationName || !starReview || !Description) {
       throw new ResponseError(400, "Data must be filled");
     }
 
@@ -22,7 +23,7 @@ export class ReviewServices {
     }
 
     const isDestinationExists = await DestinationModel.find({
-      _id: destinationId,
+      Title: destinationName,
     }).countDocuments();
 
     if (isDestinationExists == 0) {
@@ -31,7 +32,7 @@ export class ReviewServices {
 
     await ReviewModel.create({
       userId: userId,
-      destinationId: destinationId,
+      destinationName : destinationName,
       starReview: starReview,
       Description: Description,
     });
@@ -42,7 +43,6 @@ export class ReviewServices {
   static async getReviews() {
     const data = await ReviewModel.find({})
       .populate("userId", "name -_id")
-      .populate("destinationId", "Title -_id")
       .lean();
 
     return data;

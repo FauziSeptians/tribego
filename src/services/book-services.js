@@ -59,7 +59,7 @@ export class BookServices {
 
   static async getBook() {
     const data = await BookedModel.find({})
-      .populate("userId", "name -_id")
+      .populate("userId", "name _id")
       .populate("destinationId", "Title Images -_id")
       .lean();
 
@@ -84,15 +84,9 @@ export class BookServices {
     if (isDataExists == 0) {
       return [];
     }
-
-    console.log(data.destinationName);
     const Destination = await DestinationModel.find({});
 
-    console.log(Destination);
-
     data.Images = Destination.Images;
-
-    console.log("test");
 
     return {
       data: data,
@@ -112,22 +106,24 @@ export class BookServices {
       throw new ResponseError(404, "Id not found");
     }
 
-    const { userId, destinationId, guest, startBook, endBook } = requestBody;
+    const { userId, destinationName, guest, startBook, endBook } = requestBody;
+    console.log("test");
     console.log(requestBody);
-    if (!userId || !destinationId || !guest || !startBook || !endBook) {
+    if (!userId || !destinationName || !guest || !startBook || !endBook) {
       throw new ResponseError(400, "Data must be filled");
     }
 
     const isDataExists = await UserModel.find({
       _id: userId,
     }).countDocuments();
+    console.log(isDataExists);
 
     if (isDataExists == 0) {
       throw new ResponseError(400, "UserId not found");
     }
 
     const isDestinationExists = await DestinationModel.find({
-      _id: destinationId,
+      Title: destinationName,
     }).countDocuments();
 
     if (isDestinationExists == 0) {
@@ -144,7 +140,7 @@ export class BookServices {
       },
       {
         userId: userId,
-        destinationId: destinationId,
+        destinationName: destinationName,
         guest: guest,
         startBook: startBook,
         endBook: endBook,
