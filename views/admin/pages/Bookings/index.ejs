@@ -8,7 +8,7 @@
     <div class="admin-destination min-h-full mx-10 table-text">
         <div class="flex-between">
           <div>
-            <h1>DESTINATIONS</h1>
+            <h1>BOOKINGS</h1>
           </div>
           <div class="btn-create" onclick="openCreateModal()">
             Create
@@ -58,7 +58,7 @@
                 </td>
                 <td class="text-center action">
                   <div class="flex gap-1">
-                    <div class="btn-view" onclick="openEditModal('<%= JSON.stringify(value) %>')">
+                    <div class="btn-view" onclick="openViewModal('<%= JSON.stringify(value) %>')">
                       <div>View</div>
                     </div>
                     <div class="btn-edit" onclick="openEditModal('<%= JSON.stringify(value) %>')">
@@ -73,6 +73,38 @@
             <% }) %>
           </tbody>
         </table>
+    </div>
+
+    <div id="viewModal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeViewModal()">&times;</span>
+          <div>
+            <div>
+              <h1 for="viewId">Id</h1>
+              <p id="viewId"></p>
+            </div>
+            <div>
+              <h1 for="viewUserId">User Id</h1>
+              <p id="viewUserId"></p>
+            </div>
+            <div>
+              <h1 for="viewDestinationId">Destination Id</h1>
+              <p id="viewDestinationId"></p>
+            </div>
+            <div>
+              <h1 for="viewGuest">guest</h1>
+              <p id="viewGuest"></p>
+            </div>
+            <div>
+              <h1 for="viewStartBook">startBook</h1>
+              <p id="viewStartBook"></p>
+            </div>
+            <div>
+              <h1 for="viewEndBook">endBook</h1>
+              <p id="viewEndBook"></p>
+            </div>
+        </div>
+      </div>
     </div>
 
     <div id="createModal" class="modal">
@@ -134,16 +166,40 @@
     createModal.style.display = "none";
   }
 
+  function openViewModal(data) {
+    var viewModal = document.getElementById("viewModal");
+    viewModal.style.display = "flex";
+
+    const item = JSON.parse(data);
+
+    console.log(item);
+
+
+    document.getElementById("viewId").innerHTML = item._id;
+    document.getElementById("viewUserId").innerHTML = item.userId;
+    document.getElementById("viewDestinationId").innerHTML = item.destinationName;
+    document.getElementById("viewGuest").innerHTML = item.guest;
+    document.getElementById("viewStartBook").innerHTML = item.startBook;
+    document.getElementById("viewEndBook").innerHTML = item.endBook;  
+  }
+
+  function closeViewModal() {
+    var viewModal = document.getElementById("viewModal");
+    viewModal.style.display = "none";
+  }
+
   function openEditModal(data) {
     var editModal = document.getElementById("createModal");
     editModal.style.display = "flex";
 
     const item = JSON.parse(data);
 
+    console.log(item);
+
     document.getElementById("createForm").action = "/destination/update/" + item.Td + '?_method=PATCH';
 
     document.getElementById("userId").value = item.userId.name;
-    document.getElementById("DestinationId").value = item.destinationId.Title;
+    document.getElementById("DestinationId").value = item.destinationName;
     document.getElementById("guest").value = item.guest;
     document.getElementById("startBook").value = item.startBook;
     document.getElementById("endBook").value = item.endBook;    
