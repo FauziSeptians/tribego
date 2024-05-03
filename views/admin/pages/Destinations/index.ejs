@@ -184,9 +184,11 @@
 
     const item = JSON.parse(data);
 
+    console.log(item)
+
     document.getElementById("createForm").action = "/destination/update/" + item.Td + '?_method=PATCH';
     document.getElementById("Title").value = item.Title
-    document.getElementById("createLocation").value = item.location
+    document.getElementById("createLocation").value = item.Location
     document.getElementById("createDescription").value = item.Description
     document.getElementById("createPrice").value = item.Price
     document.getElementById("createPromo").value = item.Promo

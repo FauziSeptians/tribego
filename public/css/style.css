@@ -645,6 +645,12 @@ header .navbar a.active-navbar {
   color: #ff8c00;
 }
 
+.flex-between {
+  display: flex;
+  justify-content: between;
+  align-items: center;
+}
+
 
 
 @media (max-width: 768px) {

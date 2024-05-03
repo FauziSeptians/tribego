@@ -30,7 +30,19 @@
               <h3><i class="fas fa-map-market-alt"></i><%= JSON.stringify(item.userId.name)  %></h3>
               <h3><i class="fas fa-map-market-alt"></i><%= JSON.stringify(item.guest)  %></h3>
               <h3><i class="fas fa-map-market-alt"></i><%= JSON.stringify(item.startBook)  %></h3>
-              <h3><i class="fas fa-map-market-alt"></i><%= JSON.stringify(item.endBook)  %></h3>
+              <div class="flex-between">
+                <h3><i class="fas fa-map-market-alt"></i><%= JSON.stringify(item.endBook)  %></h3>
+                <div class="stars">
+                  <% for (let i = 0; i < 5; i++) { %>
+                    <% if (i < 2) { %>
+                      <i class="fas fa-star" width="30"></i>
+                    <% } else { %>
+                      <i class="far fa-star" width="30"  onclick="setStart('<%= item._doc._id %>','<%= i %>')" id="<%= Number(item._doc._id)  + Number(i) + 1 %>"></i>
+                      
+                    <% } %>
+                  <% } %>
+                </div>
+              </div>
 
             </div>
           </div>
@@ -62,8 +74,34 @@
 
     <%- include('../../layouts/footer.ejs') %>
     <script>
-    // console.log('asda')
+
+    function setStart(id, i) {
+        if(id && i) {
+          fetch(`/setStar/${id}/${Number(i) + 1}`, { method: 'POST' }) 
+            .then(response => {
+              if(response.ok) {
+                let stars = document.querySelectorAll(`#${id} .stars i`);
+                stars.forEach((star, index) => {
+                  if (index < Number(i)) {
+                    star.classList.remove('far');
+                    star.classList.add('fas');
+                  } else {
+                    star.classList.remove('fas');
+                    star.classList.add('far');
+                  }
+                });
+              } else {
+                console.error('Gagal mengatur rating bintang');
+              }
+            })
+            .catch(error => {
+              console.error('Terjadi kesalahan:', error);
+            });
+        }
+      }
+
+
     </script>
-  </body>
 </html>
+
 
