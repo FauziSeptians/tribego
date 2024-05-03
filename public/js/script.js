@@ -1,7 +1,9 @@
 let searchBtn = document.querySelector("#search-btn");
 let searchBar = document.querySelector(".search-bar-container");
 let formBtn = document.querySelector("#login-btn");
+let registerBtn = document.querySelector("#register-btn");
 let loginForm = document.querySelector(".login-form-container");
+let registerForm = document.querySelector(".register-form-container");
 let formClose = document.querySelector("#form-close");
 let menu = document.querySelector("#menu-bar");
 let navbar = document.querySelector(".navbar");
@@ -26,11 +28,22 @@ searchBtn.addEventListener("click", () => {
 });
 
 formBtn.addEventListener("click", () => {
+  if (registerForm.classList.contains("active")) {
+    registerForm.classList.remove("active");
+  }
   loginForm.classList.add("active");
 });
 
 formClose.addEventListener("click", () => {
+  if (loginForm.classList.contains("active")) {
+    loginForm.classList.remove("active");
+  }
+  registerForm.classList.remove("active");
+});
+
+registerBtn.addEventListener("click", () => {
   loginForm.classList.remove("active");
+  registerForm.classList.add("active");
 });
 
 videoBtn.forEach((btn) => {
@@ -42,7 +55,21 @@ videoBtn.forEach((btn) => {
   });
 });
 
+let navbarId = document.getElementById("navbar");
+let navLinks = navbarId.querySelectorAll("a.link");
+let currentPath = window.location.pathname;
 
+navLinks.forEach((link) => {
+  if (
+    currentPath === link.getAttribute("href") ||
+    currentPath.startsWith(link.getAttribute("href") + "/") ||
+    (currentPath === "/" && link.getAttribute("href") === "/")
+  ) {
+    link.classList.add("active-navbar");
+  } else {
+    link.classList.remove("active-navbar");
+  }
+});
 
 var swiper = new Swiper(".review-slider", {
   spaceBetween: 20,
@@ -64,18 +91,18 @@ var swiper = new Swiper(".review-slider", {
   },
 });
 
-const loginBtn = document.getElementById('login-btn');
-const exitBtn = document.getElementById('exit-btn');
-const loginFormContainer = document.querySelector('.login-form-container');
+const loginBtn = document.getElementById("login-btn");
+const exitBtn = document.getElementById("exit-btn");
+const loginFormContainer = document.querySelector(".login-form-container");
 
-loginBtn.addEventListener('click', () => {
-    loginFormContainer.classList.add('active');
-    exitBtn.classList.add('visible');
+loginBtn.addEventListener("click", () => {
+  loginFormContainer.classList.add("active");
+  exitBtn.classList.add("visible");
 });
 
-exitBtn.addEventListener('click', () => {
-    loginFormContainer.classList.remove('active');
-    exitBtn.classList.remove('visible');
+exitBtn.addEventListener("click", () => {
+  loginFormContainer.classList.remove("active");
+  exitBtn.classList.remove("visible");
 });
 
 var swiper = new Swiper(".brand-slider", {

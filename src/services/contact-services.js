@@ -30,4 +30,8 @@ export class ContactServices {
 
     return data;
   }
+
+  static async delete(id) {
+    await ContactModel.deleteOne({ _id: id });
+  }
 }

@@ -1,4 +1,4 @@
-import { verifyJWT } from "../middleware/auth-middleware.js";
+import { verifyLogin } from "../middleware/auth-middleware.js";
 import { ResponseModel } from "../model/response-model.js";
 import { UserServices } from "../services/user-services.js";
 
@@ -18,7 +18,8 @@ export class userController {
   static async login(req, res, next) {
     try {
       const data = await UserServices.login(req.body);
-      return res.status(200).send(new ResponseModel(data, "OK"));
+
+      return res;
     } catch (err) {
       next(err);
     }
@@ -27,7 +28,7 @@ export class userController {
   static async getUsers(req, res, next) {
     try {
       const data = await UserServices.getUsers();
-      return res.status(200).send(new ResponseModel(data, "OK"));
+      return data;
     } catch (error) {
       next(error);
     }
@@ -52,6 +53,15 @@ export class userController {
       return res
         .status(200)
         .send(new ResponseModel({}, "Successfully deleted data user"));
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async isCheckLogin(req, res, next) {
+    try {
+      const data = await UserServices.isCheckLogin();
+      return data;
     } catch (error) {
       next(error);
     }

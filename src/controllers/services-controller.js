@@ -17,9 +17,7 @@ export class servicesController {
 
       await ServicesService.create(images.filename, data);
 
-      return res
-        .status(200)
-        .send(new ResponseModel({}, "Successfully created service"));
+      return data;
     } catch (err) {
       next(err);
     }
@@ -28,8 +26,8 @@ export class servicesController {
   static async getServices(req, res, next) {
     try {
       const data = await ServicesService.getServices();
-      return res.status(200).send(new ResponseModel(data, "OK"));
-    } catch (error) {
+      return data;
+    } catch (err) {
       next(err);
     }
   }

@@ -23,11 +23,10 @@
         <div class="slider">
           <div class="box">
             <img src="<%= review.user?.image %>" alt="" />
-            <h3><%= review.user?.name %></h3>
-            <p><%= review.user?.email %></p>
+            <h3><%= review.userId?.name %></h3>
             <div class="stars">
               <% for (let i = 0; i < 5; i++) { %>
-                <% if (i < review.startPoint) { %>
+                <% if (i < review.starReview) { %>
                   <i class="fas fa-star"></i>
                 <% } else { %>
                   <i class="far fa-star"></i>

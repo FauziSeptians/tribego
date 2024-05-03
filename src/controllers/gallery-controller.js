@@ -18,8 +18,8 @@ export class galleryController {
   static async getGallery(req, res, next) {
     try {
       const data = await GalleryServices.getGallery();
-      return res.status(200).send(new ResponseModel(data, "OK"));
-    } catch (error) {
+      return data;
+    } catch (err) {
       next(err);
     }
   }
@@ -27,9 +27,8 @@ export class galleryController {
   static async update(req, res, next) {
     try {
       const file = req.file;
-      console.log(file)
+      console.log(file);
       await GalleryServices.update(file.filename, req.params.id);
-
 
       return res
         .status(200)

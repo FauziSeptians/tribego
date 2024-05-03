@@ -18,15 +18,17 @@
       </h1>
       <div class="box-container">
 
-        <% if(data.length > 1)  { %>
+        <% if(data.length > 0)  { %>
           <% data.forEach((item) => {  %>
-          <div class="box" onclick="location.href='/destination/<%= item._doc._id %>'">
+          <div class="box">
             <img src="uploads/<%= item._doc.Images %>" alt="" />
             <div class="content">
-              <h3><i class="fas fa-map-market-alt"></i><%= JSON.stringify(item._doc.Title)  %></h3>
-              <p><%= item._doc.Location %></p>
-              <div class="price"><%=  item.TotalRupiah %></span> <span><%= item.Price  %></span></div>
-              <a href="#" class="btn" onclick="booked('<%= item._doc._id  %>')">book now</a>
+              <h3><i class="fas fa-map-market-alt"></i><%= JSON.stringify(item.destinationId.name)  %></h3>
+              <h3><i class="fas fa-map-market-alt"></i><%= JSON.stringify(item.userId.name)  %></h3>
+              <h3><i class="fas fa-map-market-alt"></i><%= JSON.stringify(item.guest)  %></h3>
+              <h3><i class="fas fa-map-market-alt"></i><%= JSON.stringify(item.startBook)  %></h3>
+              <h3><i class="fas fa-map-market-alt"></i><%= JSON.stringify(item.endBook)  %></h3>
+
             </div>
           </div>
 
@@ -57,6 +59,5 @@
       console.log('asda')
     </script>
   </body>
-
 </html>
 
