@@ -25,7 +25,7 @@
               <th>End Book</th>
               <th class="text-center">Action</th>
             </tr>
-            <% data.forEach(value => { %>
+            <% data.forEach((value) => { %>
               <tr>
                 <td>
                   <div class="isMobile">ID :</div>
@@ -33,11 +33,16 @@
                 </td>
                 <td>
                   <div class="isMobile">User ID :</div>
-                  <%= value.userId.name  %>
+                   <% if(value.userId){ %>
+                    <div><%= value.userId.name  %></div>
+                    <% }else { %>
+                    
+                      <div>-</div>
+                      <% } %>
                 </td>
                 <td>
                   <div class="isMobile">Destination Id :</div>
-                  <%= value.destinationId.Title  %>
+                  <%= value.destinationName %>
                 </td>
                 <td>
                   <div class="isMobile">guest :</div>

@@ -133,10 +133,21 @@ apps.get("/logout", logout);
 
 // METHODS
 async function home(req, res) {
-  res.render("index", {
-    dataServices: await servicesController.getServices(),
-    dataGallery: await galleryController.getGallery(),
-  });
+  try {
+    const services = await servicesController.getServices();
+    const gallery = await galleryController.getGallery();
+    res.render("index", {
+      dataServices: services,
+      dataGallery: gallery,
+      message: undefined,
+    });
+  } catch (error) {
+    res.render("index", {
+      message: error.message,
+      dataServices: undefined,
+      dataGallery: undefined,
+    });
+  }
 }
 
 async function destinations(req, res) {
@@ -181,14 +192,14 @@ async function destinationDetail(req, res) {
 async function bookings(req, res) {
   try {
     const data = await BookServices.getBookByIdUser(req.session.userId);
-    console.log(data)
+    console.log(data);
     res.render("users/pages/Bookings/index", {
       data: data,
-      message : undefined
+      message: undefined,
     });
   } catch (error) {
     res.render("users/pages/Bookings/index", {
-      message : error.message
+      message: error.message,
     });
   }
 }
@@ -238,8 +249,10 @@ async function adminGallery(req, res) {
 }
 
 async function adminBooking(req, res) {
+  const data = await bookController.getBook();
+  console.log(data);
   res.render(`${routerAdminPage}Bookings/index`, {
-    data: await bookController.getBook(),
+    data: data,
   });
 }
 
@@ -256,21 +269,23 @@ async function adminContact(req, res) {
 }
 
 async function login(req, res) {
-  const data = await UserServices.login(req.body);
+  try {
+    const data = await UserServices.login(req.body);
 
-  console.log(data);
+    if (data) {
+      req.session.userId = data._id;
+      req.session.userEmail = data.email;
+      req.session.userName = data.name;
+      req.session.userRole = data.Role;
 
-  if (data) {
-    req.session.userId = data._id;
-    req.session.userEmail = data.email;
-    req.session.userName = data.name;
-    req.session.userRole = data.Role;
-
+      res.redirect("/");
+      return;
+    } else {
+      res.redirect("/login");
+      return;
+    }
+  } catch (error) {
     res.redirect("/");
-    return;
-  } else {
-    res.redirect("/login");
-    return;
   }
 }
 
