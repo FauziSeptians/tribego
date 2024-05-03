@@ -1,107 +1,201 @@
 <!DOCTYPE html>
 <html lang="en">
-  <%- include('../../layouts/header.ejs') %>
+<%- include('../../layouts/header.ejs') %>
+
   <body>
 
     <%- include('../../layouts/navigation.ejs') %>
 
-    <section class="packages min-h-full" id="packages">
-      <h1 class="heading">
-        <span>P</span>
-        <span>A</span>
-        <span>C</span>
-        <span>K</span>
-        <span>A</span>
-        <span>G</span>
-        <span>E</span>
-        <span>S</span>
-      </h1>
-      <% if(message) { %>
-        <div class="box-container"><%= message%></div>
-      <% } else { %>
-        <div class="box-container">
+      <section class="packages min-h-full" id="packages">
+        <h1 class="heading">
+          <span>P</span>
+          <span>A</span>
+          <span>C</span>
+          <span>K</span>
+          <span>A</span>
+          <span>G</span>
+          <span>E</span>
+          <span>S</span>
+        </h1>
+        <% if(message) { %>
+          <div class="box-container">
+            <%= message%>
+          </div>
+          <% } else { %>
+            <div class="box-container">
+              <% function formatDate(date) { %>
+                <% const day=String(date.getDate()).padStart(2, '0' ); %>
+                  <% const monthNames=["Jan", "Feb" , "Mar" , "Apr" , "May" , "Jun" , "Jul" , "Aug" , "Sep" , "Oct"
+                    , "Nov" , "Dec" ]; %>
+                    <% const month=monthNames[date.getMonth()]; %>
+                      <% const year=date.getFullYear(); %>
 
-        <% if(data.length > 0)  { %>
-          <% data.forEach((item) => {  %>
-          <div class="box">
-            <img src="uploads/<%= item._doc.Images %>" alt="" />
-            <div class="content">
-              <h3><i class="fas fa-map-market-alt"></i><%= JSON.stringify(item.destinationName)  %></h3>
-              <h3><i class="fas fa-map-market-alt"></i><%= JSON.stringify(item.userId.name)  %></h3>
-              <h3><i class="fas fa-map-market-alt"></i><%= JSON.stringify(item.guest)  %></h3>
-              <h3><i class="fas fa-map-market-alt"></i><%= JSON.stringify(item.startBook)  %></h3>
-              <div class="flex-between">
-                <h3><i class="fas fa-map-market-alt"></i><%= JSON.stringify(item.endBook)  %></h3>
-                <div class="stars">
-                  <% for (let i = 0; i < 5; i++) { %>
-                    <% if (i < 2) { %>
-                      <i class="fas fa-star" width="30"></i>
-                    <% } else { %>
-                      <i class="far fa-star" width="30"  onclick="setStart('<%= item._doc._id %>','<%= i %>')" id="<%= Number(item._doc._id)  + Number(i) + 1 %>"></i>
-                      
-                    <% } %>
-                  <% } %>
-                </div>
-              </div>
+                        <% return `${day} ${month} ${year}`; %>
+                          <% } %>
+
+                            <% if(data.length> 0 && data ) { %>
+                              <% data.forEach((item, idx)=> { %>
+                                <div class="box">
+                                  <img src="/uploads/<%= Images[idx] %>" alt="" />
+                                  <div class="content">
+                                    <h3><i class="fas fa-map-market-alt"></i>
+                                      <p id="destinationName" value="<%= item.destinationName %>">
+                                        <%= item.destinationName %>
+                                      </p>
+
+                                    </h3>
+                                    <h3><i class="fas fa-map-market-alt"></i>
+                                      <%= item.userId.name %>
+                                    </h3>
+                                    <h3><i class="fas fa-map-market-alt"></i>
+                                      <%= item.guest %>
+                                    </h3>
+                                    <h3><i class="fas fa-map-market-alt"></i>
+                                      <%= formatDate(item.startBook) %>
+                                    </h3>
+                                    <div class="flex-between">
+                                      <h3><i class="fas fa-map-market-alt"></i>
+                                        <%= formatDate(item.endBook) %>
+                                      </h3>
+                                    </div>
+                                    <div style="width: 100%; border-bottom: 1px solid black; margin-bottom: 3px;">
+
+                                    </div>
+                                    <div style="font-size: 18px; margin-bottom: 6px; margin-top: 6px;">
+                                      Review Tab
+                                    </div>
+                                    <div style="display:flex ; flex-direction: column; gap: 12px; cursor: pointer;">
+                                      <div class="stars" onclick="setStart('<%= idx %>')">
+                                        <% for (let i=0; i < 5; i++) { %>
+                                          <i class="far fa-star" width="30" id="stars-<%=[idx]%><%=[i]%>"></i>
+                                          <% } %>
+                                      </div>
+                                      <textarea style="border : 1px solid black; width: 100%; padding: 5px;"
+                                        id="text-<%=[idx]%>"></textarea>
+                                      <button style="height: 50px; background-color: #ffa500; cursor: pointer;"
+                                        onclick="submitData('<%= idx %>')">
+                                        Send review
+                                      </button>
+                                      <div id="messages" style="margin-top: 10px;"></div>
+                                    </div>
+
+                                  </div>
+                                </div>
+
+                                <% }); %>
+
+                                  <% } else { %>
+                                    <h1 class=" heading">No Destinations Found</h1>
+                                    <% } %>
+                                      <% } %>
+
+
 
             </div>
+      </section>
+
+      <section class="brand-container">
+        <div class="swiper-container brand-slider">
+          <div class="swiper-wrapper">
+            <div class="swiper-slide"><img src="images/1.jpg" alt="" /></div>
+            <div class="swiper-slide"><img src="images/2.jpg" alt="" /></div>
+            <div class="swiper-slide"><img src="images/3.jpg" alt="" /></div>
+            <div class="swiper-slide"><img src="images/4.jpg" alt="" /></div>
+            <div class="swiper-slide"><img src="images/5.jpg" alt="" /></div>
+            <div class="swiper-slide"><img src="images/6.jpg" alt="" /></div>
           </div>
-
-        <% }); %>
-
-        <% } else { %>
-          <h1 class="heading">No Destinations Found</h1>
-        <% } %>
-      <% } %>
-
-      
-
-      </div>
-    </section>
-
-    <section class="brand-container">
-      <div class="swiper-container brand-slider">
-        <div class="swiper-wrapper">
-          <div class="swiper-slide"><img src="images/1.jpg" alt="" /></div>
-          <div class="swiper-slide"><img src="images/2.jpg" alt="" /></div>
-          <div class="swiper-slide"><img src="images/3.jpg" alt="" /></div>
-          <div class="swiper-slide"><img src="images/4.jpg" alt="" /></div>
-          <div class="swiper-slide"><img src="images/5.jpg" alt="" /></div>
-          <div class="swiper-slide"><img src="images/6.jpg" alt="" /></div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <%- include('../../layouts/footer.ejs') %>
-    <script>
+      <%- include('../../layouts/footer.ejs') %>
+        <script>
 
-    function setStart(id, i) {
-        if(id && i) {
-          fetch(`/setStar/${id}/${Number(i) + 1}`, { method: 'POST' }) 
-            .then(response => {
-              if(response.ok) {
-                let stars = document.querySelectorAll(`#${id} .stars i`);
-                stars.forEach((star, index) => {
-                  if (index < Number(i)) {
-                    star.classList.remove('far');
-                    star.classList.add('fas');
-                  } else {
-                    star.classList.remove('fas');
-                    star.classList.add('far');
-                  }
-                });
-              } else {
-                console.error('Gagal mengatur rating bintang');
+          let temp = [];
+          console.log("<%=data.length%>")
+
+          console.log(data)
+          console.log("waduh")
+          function setStart(idx) {
+
+            const lengthData = {"<%=data.length%>"}
+            let stars = 0
+            if (temp[idx]) {
+              stars = temp[idx] + 1
+              temp[idx] = stars
+
+            } else {
+              stars = 1
+              temp.push(stars)
+            }
+
+
+            console.log(stars)
+            const length = stars
+
+
+
+
+            for (let i = 0; i < length; i++) {
+              let stars = document.getElementById("stars-" + idx + "" + i)
+              console.log("stars-" + idx + "" + i)
+              console.log(stars)
+              stars.classList.add("fas")
+
+            }
+
+          }
+
+          async function submitData(segment) {
+            const id = "<%= userId %>"
+            const starts = temp[segment]
+            const description = document.getElementById("text-" + segment).value;
+            const destinationName = document.getElementById("destinationName").innerHTML
+
+            console.log(destinationName)
+            const words = destinationName.trim().split(/\s+/); // Trim leading/trailing spaces, split on one or more whitespace characters
+
+            // Option 2: Preserve at least one space (if originally present)
+            const destinationNameWithSingleSpaces = words.join(" ");
+
+
+            console.log(destinationName)
+
+            const response = await fetch("/api/create/review", {
+              method: "POST",
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({ userId: id, destinationName: destinationNameWithSingleSpaces, starReview: starts, Description: description })
+            }).then((res) => {
+              const messages = document.getElementById("messages")
+              console.log(res)
+
+              if (res.status == 200) {
+                messages.innerHTML = "<div>Successfully created review</div>"
+              } else if (res.status == 400) {
+                messages.innerHTML = "<div>" + res.statusText + "</div>"
               }
+            }).catch((error) => {
+              const messages = document.getElementById("messages")
+
+              messages.innerHTML = "<div>" + error.message + "</div>"
             })
-            .catch(error => {
-              console.error('Terjadi kesalahan:', error);
-            });
-        }
-      }
+
+            console.log(starts)
+            console.log("toot")
+            console.log(description)
 
 
-    </script>
+            console.log(segment)
+          }
+
+
+
+
+
+
+
+
+        </script>
+
 </html>
-
-

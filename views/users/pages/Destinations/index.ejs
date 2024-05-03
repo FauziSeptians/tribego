@@ -1,125 +1,177 @@
 <!DOCTYPE html>
 <html lang="en">
-  <%- include('../../layouts/header.ejs') %>
+<%- include('../../layouts/header.ejs') %>
+
   <body>
 
     <%- include('../../layouts/navigation.ejs') %>
 
-    <section class="packages min-h-full" id="packages">
-      <h1 class="heading">
-        <span>P</span>
-        <span>A</span>
-        <span>C</span>
-        <span>K</span>
-        <span>A</span>
-        <span>G</span>
-        <span>E</span>
-        <span>S</span>
-      </h1>
-      <div class="box-container">
+      <section class="packages min-h-full" id="packages">
+        <h1 class="heading">
+          <span>P</span>
+          <span>A</span>
+          <span>C</span>
+          <span>K</span>
+          <span>A</span>
+          <span>G</span>
+          <span>E</span>
+          <span>S</span>
+        </h1>
+        <div class="box-container">
 
-        <% if(data.length > 1)  { %>
-          <% data.forEach((item) => {  %>
-          <div class="box" onclick="location.href='/destination/<%= item._doc._id %>'">
-            <img src="uploads/<%= item._doc.Images %>" alt="" />
-            <div class="content">
-              <h3><i class="fas fa-map-market-alt"></i><%= JSON.stringify(item._doc.Title)  %></h3>
-              <p><%= item._doc.Location %></p>
-              <div class="price"><%=  item.TotalRupiah %></span> <span><%= item.Price  %></span></div>
-              <a href="#" class="btn" onclick="booked('<%= item._doc._id  %>')">book now</a>
-            </div>
-          </div>
-
-        <% }); %>
-
-        <% } else if(data.length == 0) { %>
- 
-          <h1 class="heading">No Destinations Found</h1>
-        <% }else { %>
-          <div class="box" onclick="location.href='/destination/<%= data._doc._id %>'">
-            <img src="uploads/<%= data._doc.Images %>" alt="" />
-            <div class="content">
-              <h3><i class="fas fa-map-market-alt"></i><%= JSON.stringify(data._doc.Title)  %></h3>
-              <p><%= data._doc.Location %></p>
-              <div class="price"><%=  data.TotalRupiah %></span> <span><%= data.Price  %></span></div>
-              <div style="margin-top: 10px;">
-                <%= data.Description %>
+          <% if(data.length> 1) { %>
+            <% data.forEach((item)=> { %>
+              <div class="box" onclick="location.href='/destination/<%= item._doc._id %>'">
+                <img src="/uploads/<%= item._doc.Images %>" alt="" />
+                <div class="content">
+                  <h3><i class="fas fa-map-market-alt"></i>
+                    <%= JSON.stringify(item._doc.Title) %>
+                  </h3>
+                  <p>
+                    <%= item._doc.Location %>
+                  </p>
+                  <div class="price">
+                    <%= item.TotalRupiah %></span> <span>
+                        <%= item.Price %>
+                      </span>
+                  </div>
+                  <a href="#" class="btn">book now</a>
+                </div>
               </div>
-              <a href="#" class="btn" id="book-form">book now</a>
-            </div>
-          </div>
-          <% } %>
+
+              <% }); %>
+
+                <% } else if(data.length==0) { %>
+
+                  <h1 class="heading">No Destinations Found</h1>
+                  <% }else { %>
+                    <div class="box">
+                      <img src="/uploads/<%= data._doc.Images %>" alt="" />
+
+                      <div class="content">
+                        <h3><i class="fas fa-map-market-alt"></i>
+                          <%= JSON.stringify(data._doc.Title) %>
+                        </h3>
+                        <p>
+                          <%= data._doc.Location %>
+                        </p>
+                        <div class="price">
+                          <%= data.TotalRupiah %></span> <span>
+                              <%= data.Price %>
+                            </span>
+                        </div>
+                        <div style="margin-top: 10px;">
+                          <%= data.Description %>
+                        </div>
+                        <button type="submit" onclick="booked()" id="buttonBook">
+                          book now</button>
+                        <div id="newTab">
+
+                        </div>
+                        <div id="errorsMessage"></div>
+
+                      </div>
+
+                    </div>
+                    <% } %>
 
 
-      </div>
-    </section>
-
-    <section class="brand-container">
-      <div class="swiper-container brand-slider">
-        <div class="swiper-wrapper">
-          <div class="swiper-slide"><img src="images/1.jpg" alt="" /></div>
-          <div class="swiper-slide"><img src="images/2.jpg" alt="" /></div>
-          <div class="swiper-slide"><img src="images/3.jpg" alt="" /></div>
-          <div class="swiper-slide"><img src="images/4.jpg" alt="" /></div>
-          <div class="swiper-slide"><img src="images/5.jpg" alt="" /></div>
-          <div class="swiper-slide"><img src="images/6.jpg" alt="" /></div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <%- include('../../layouts/footer.ejs') %>
-    <script>
-      const bookForm = document.getElementById('book-form');
-      console.log("hallo")
+      <section class="brand-container">
+        <div class="swiper-container brand-slider">
+          <div class="swiper-wrapper">
+            <div class="swiper-slide"><img src="images/1.jpg" alt="" /></div>
+            <div class="swiper-slide"><img src="images/2.jpg" alt="" /></div>
+            <div class="swiper-slide"><img src="images/3.jpg" alt="" /></div>
+            <div class="swiper-slide"><img src="images/4.jpg" alt="" /></div>
+            <div class="swiper-slide"><img src="images/5.jpg" alt="" /></div>
+            <div class="swiper-slide"><img src="images/6.jpg" alt="" /></div>
+          </div>
+        </div>
+      </section>
 
-bookForm.addEventListener('click', async (e) => {
-  console.log("wor");
-  e.preventDefault();
+      <%- include('../../layouts/footer.ejs') %>
+        <script>
+          const bookForm = document.getElementById('bookedData');
+          const errorsMessage = document.getElementById("errorsMessage")
+          const newTab = document.getElementById("newTab")
+          let newTabDom;
 
-  const destinationName = document.getElementById('destinationName').value;
-  const guest = document.getElementById('guest').value;
-  const startBook = document.getElementById('startBook').value;
-  const endBook = document.getElementById('endBook').value;
-  const id = '<%= userId %>'
+          async function booked() {
+            console.log("hallow")
+            const buttonBook = document.getElementById("buttonBook")
+            buttonBook.style = "display : none"
 
-  console.log(id);
+            newTab.innerHTML = `
+          <div class="inputBox" style="margin-top : 20px">
+            <h3>how many</h3>
+            <input type="text"  id="guest" placeholder="number of guests" />
+          </div>
+          <div class="inputBox">
+            <h3>arrivals</h3>
+            <input type="date" id="startBook" />
+          </div>
+          <div class="inputBox">
+            <h3>leaving</h3>
+            <input type="date" id="endBook" />
+          </div>
+          
+          <button type="submit" class="btn" value="book now" onClick="SubmitForm()">book Now</button>
+          <div id="messages" style="margin-top: 10px;"></div>
+        `
+          }
 
-  const data = { userId: id, destinationName, guest, startBook, endBook }; // Memperbaiki format objek data
-  console.log(data);
+          async function SubmitForm() {
 
-  try {
-    const response = await fetch('/api/create/book', { // Memperbaiki endpoint
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
-    });
+            const guest = document.getElementById('guest').value;
+            const startBook = document.getElementById('startBook').value;
+            const endBook = document.getElementById('endBook').value;
+            const id = '<%= userId %>';
+            const data = { userId: id, destinationName: "<%= data.Title %>", guest: guest, startBook: startBook, endBook: endBook }; // Memperbaiki format objek data
+            console.log(data);
 
-    console.log(response)
-    const responseData = await response.json();
+            try {
+              const response = await fetch('/api/create/book', { // Memperbaiki endpoint
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+              });
 
-    if(response.status == 200){
-      
-      document.getElementById("messages").innerHTML = "<div>" + "succesfully created data" + "</div>";
-    }else{
+              console.log(response)
+              const responseData = await response.json();
 
-      document.getElementById("messages").innerHTML = "<div style=red>" + responseData.errorsMessage + "</div>";
-    }
+              if (response.status == 200) {
 
-  
-    console.log(responseData); // Melakukan log respons dari server
-    
-    // window.location.href = '/bookings';
+                document.getElementById("messages").innerHTML = "<div>" + "succesfully created data" + "</div>";
+                setTimeout(() => {
+                  location.href = "/books"
+                }, 1000);
+              } else {
 
-  } catch (error) {
-    console.error('Error:', error);
-    console.log(error.errorsMessage)
-    document.getElementById("messages").innerHTML = "<div>" + error.errorsMessage + "</div>";
-  }
-})
-    </script>
+                document.getElementById("messages").innerHTML = "<div style=red>" + responseData.errorsMessage + "</div>";
+              }
+
+
+              console.log(responseData); // Melakukan log respons dari server
+
+              // window.location.href = '/bookings';
+
+            } catch (error) {
+              console.error('Error:', error);
+              console.log(error.errorsMessage)
+              document.getElementById("messages").innerHTML = "<div>" + error.errorsMessage + "</div>";
+            }
+
+          }
+
+
+
+
+        </script>
   </body>
 
 </html>
-

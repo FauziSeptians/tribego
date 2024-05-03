@@ -146,8 +146,9 @@
     editModal.style.display = "flex";
 
     const item = JSON.parse(data);
+    console.log(item)
 
-    document.getElementById("viewId").innerText = item.id
+    document.getElementById("viewId").innerText = item._id
     document.getElementById("viewName").innerText = item.name
     document.getElementById("viewEmail").innerText = item.email
   }

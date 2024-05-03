@@ -17,7 +17,7 @@ export class BookServices {
       destinationName,
     } = requestBody;
 
-    if(!userId){
+    if (!userId) {
       throw new ResponseError(400, "you must login first");
     }
 
@@ -59,9 +59,11 @@ export class BookServices {
 
   static async getBook() {
     const data = await BookedModel.find({})
-      .populate("userId", "name -_id")
-      .populate("destinationId", "Title -_id")
+      .populate("userId", "name _id")
+      .populate("destinationId", "Title Images -_id")
       .lean();
+
+    console.log(data);
 
     return data;
   }
@@ -71,6 +73,10 @@ export class BookServices {
       throw new ResponseError(400, "Please insert id first");
     }
 
+    const data = await BookedModel.find({
+      userId: id,
+    }).populate("userId", "name -_id");
+
     const isDataExists = await BookedModel.find({
       userId: id,
     }).countDocuments();
@@ -78,12 +84,14 @@ export class BookServices {
     if (isDataExists == 0) {
       return [];
     }
+    const Destination = await DestinationModel.find({});
 
-    const data = await BookedModel.find({
-      userId: id,
-    }).populate("userId","name -_id")
+    data.Images = Destination.Images;
 
-    return data;
+    return {
+      data: data,
+      Destination: Destination,
+    };
   }
 
   static async update(requestBody, id) {
@@ -98,22 +106,24 @@ export class BookServices {
       throw new ResponseError(404, "Id not found");
     }
 
-    const { userId, destinationId, guest, startBook, endBook } = requestBody;
+    const { userId, destinationName, guest, startBook, endBook } = requestBody;
+    console.log("test");
     console.log(requestBody);
-    if (!userId || !destinationId || !guest || !startBook || !endBook) {
+    if (!userId || !destinationName || !guest || !startBook || !endBook) {
       throw new ResponseError(400, "Data must be filled");
     }
 
     const isDataExists = await UserModel.find({
       _id: userId,
     }).countDocuments();
+    console.log(isDataExists);
 
     if (isDataExists == 0) {
       throw new ResponseError(400, "UserId not found");
     }
 
     const isDestinationExists = await DestinationModel.find({
-      _id: destinationId,
+      Title: destinationName,
     }).countDocuments();
 
     if (isDestinationExists == 0) {
@@ -130,7 +140,7 @@ export class BookServices {
       },
       {
         userId: userId,
-        destinationId: destinationId,
+        destinationName: destinationName,
         guest: guest,
         startBook: startBook,
         endBook: endBook,

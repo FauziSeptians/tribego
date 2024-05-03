@@ -92,7 +92,7 @@
         <% if(dataDestination.length > 1)  { %>
           <% dataDestination.forEach((item) => {  %>
           <div class="box" onclick="location.href='/destination/<%= item._doc._id %>'">
-            <img src="uploads/<%= item._doc.Images %>" alt="" />
+            <img src="/uploads/<%= item._doc.Images %>" alt="" />
             <div class="content">
               <h3><i class="fas fa-map-market-alt"></i><%= JSON.stringify(item._doc.Title)  %></h3>
               <p><%= item._doc.Location %></p>
@@ -129,7 +129,7 @@
       <% if(dataServices.length > 1)  { %>
         <% dataServices.forEach((item) => {  %>
         <div class="box">
-          <img src="uploads/<%= item._doc.Images %>" alt="" width="80px" height="80px">
+          <img src="/uploads/<%= item._doc.Images %>" alt="" width="80px" height="80px">
           <h3><%= item._doc.Title %></h3>
           <p><%= item._doc.Description %></p>
         </div>
