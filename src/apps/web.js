@@ -214,8 +214,25 @@ async function bookings(req, res) {
   try {
     const data = await BookServices.getBookByIdUser(req.session.userId);
     console.log(data);
+    let Images = []
+    data.data.map((item, idx) => {
+      data.Destination.map((items) => {
+        console.log(items.Title == item.destinationName)
+        if(items.Title == item.destinationName){
+          data.data[idx].Images= items.Images
+          Images.push(items.Images)
+        }
+        return;
+      })
+      return;
+    })
+
+    console.log(data.data)
+    console.log(Images)
+    
     res.render("users/pages/Bookings/index", {
-      data: data,
+      data: data.data,
+      Images : Images,
       message: undefined,
     });
   } catch (error) {

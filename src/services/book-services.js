@@ -17,7 +17,7 @@ export class BookServices {
       destinationName,
     } = requestBody;
 
-    if(!userId){
+    if (!userId) {
       throw new ResponseError(400, "you must login first");
     }
 
@@ -60,8 +60,10 @@ export class BookServices {
   static async getBook() {
     const data = await BookedModel.find({})
       .populate("userId", "name -_id")
-      .populate("destinationId", "Title -_id")
+      .populate("destinationId", "Title Images -_id")
       .lean();
+
+    console.log(data);
 
     return data;
   }
@@ -71,6 +73,10 @@ export class BookServices {
       throw new ResponseError(400, "Please insert id first");
     }
 
+    const data = await BookedModel.find({
+      userId: id,
+    }).populate("userId", "name -_id");
+
     const isDataExists = await BookedModel.find({
       userId: id,
     }).countDocuments();
@@ -79,11 +85,19 @@ export class BookServices {
       return [];
     }
 
-    const data = await BookedModel.find({
-      userId: id,
-    }).populate("userId","name -_id")
+    console.log(data.destinationName);
+    const Destination = await DestinationModel.find({});
 
-    return data;
+    console.log(Destination);
+
+    data.Images = Destination.Images;
+
+    console.log("test");
+
+    return {
+      data: data,
+      Destination: Destination,
+    };
   }
 
   static async update(requestBody, id) {

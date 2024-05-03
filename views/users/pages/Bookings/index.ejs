@@ -22,9 +22,9 @@
         <div class="box-container">
 
         <% if(data.length > 0)  { %>
-          <% data.forEach((item) => {  %>
+          <% data.forEach((item, idx) => {  %>
           <div class="box">
-            <img src="uploads/<%= item._doc.Images %>" alt="" />
+            <img src="/uploads/<%= Images[idx] %>" alt="" />
             <div class="content">
               <h3><i class="fas fa-map-market-alt"></i><%= JSON.stringify(item.destinationName)  %></h3>
               <h3><i class="fas fa-map-market-alt"></i><%= JSON.stringify(item.userId.name)  %></h3>
@@ -62,7 +62,7 @@
 
     <%- include('../../layouts/footer.ejs') %>
     <script>
-    // console.log('asda')
+      console.log('asda')
     </script>
   </body>
 </html>
